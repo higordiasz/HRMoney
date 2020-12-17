@@ -25,6 +25,7 @@ const Versao = require('./models/versao');
 const User = require('./models/user');
 const Gratuito = require('./models/gratuito');
 const Instagram = require('./models/instagram');
+const Validade = require('./models/validade');
 
 db.on('connected', () => {
     console.log('Mongoose default connection is open');
@@ -62,5 +63,8 @@ app.use('/gratuito', gratuitoRoutes);
 
 const instagramRoutes = require('./routes/instagram-routes');
 app.use('/instagram', instagramRoutes);
+
+const validadeRoutes = require('./routes/validade-routes');
+app.use('/validade', validadeRoutes);
 
 module.exports = app;
