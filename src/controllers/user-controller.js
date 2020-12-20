@@ -21,8 +21,12 @@ exports.Login = async (req, res) => {
 
         let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
 
-        if (Usuario.length >= 1)
-            res.status(200).send(Usuario[0])
+        if (Usuario.length >= 1) {
+            let retorno = Usuario[0].toJSON();
+            delete retorno._id;
+            delete retorno.__v;
+            res.status(200).send(retorno)
+        }
         else
             res.status(200).send({ message: 'Usuario ou senha invalido' });
 

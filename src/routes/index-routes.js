@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path')
 
 router.get('/', (req, res, next) => {
-  res.status(200).send({
-    title: 'HRMoneyAPI',
-    version: '1.0.0'
-  });
+  res.render('index', {page: 'Home', menuId: 'home'})
+});
+
+router.get('/packages', (req, res, next) => {
+  res.render('packages', {page: 'Home', menuId: 'home'})
 });
 
 module.exports = router;

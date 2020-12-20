@@ -131,34 +131,36 @@ exports.Alterar = async (req, res) => {
 
     try {
 
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
+        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.ContaAntiga })
 
         if (!insta) {
 
             res.status(201).send({ message: 'Conta do instagram não encontrada!' });
 
         } else {
+            if (await Instagram.findOne({ Conta: req.body.Conta }) != null && req.body.ContaAntiga != req.body.Conta)
+                res.status(200).send({ message: 'Conta do instagram já cadastrada no sistema!' })
+            else {
+                insta.Token = req.body.Token
+                insta.Conta = req.body.Conta
+                insta.Senha = req.body.Senha
+                insta.Ganhar = req.body.Ganhar
+                insta.Siga = req.body.Siga
+                insta.Kzom = req.body.Kzom
+                insta.Dizu = req.body.Dizu
+                insta.Farma = req.body.Farma
+                insta.Broad = req.body.Broad
+                insta.Everve = req.body.Everve
+                insta.Challenge = req.body.Challenge
+                insta.Block = req.body.Block
+                insta.Seguir = req.body.Seguir
+                insta.Curtir = req.body.Curtir
+                insta.Meta = req.body.Meta
 
-            insta.Token = req.body.Token
-            insta.Conta = req.body.Conta
-            insta.Senha = req.body.Senha
-            insta.Ganhar = req.body.Ganhar
-            insta.Siga = req.body.Siga
-            insta.Kzom = req.body.Kzom
-            insta.Dizu = req.body.Dizu
-            insta.Farma = req.body.Farma
-            insta.Broad = req.body.Broad
-            insta.Everve = req.body.Everve
-            insta.Challenge = req.body.Challenge
-            insta.Block = req.body.Block
-            insta.Seguir = req.body.Seguir
-            insta.Curtir = req.body.Curtir
-            insta.Meta = req.body.Meta
+                insta.save();
 
-            insta.save();
-
-            res.status(201).send({ message: 'Conta do Instagram alterada!' });
-
+                res.status(201).send({ message: 'Conta do Instagram alterada!' });
+            }
         }
 
     } catch (e) {
@@ -174,9 +176,14 @@ exports.Get = async (req, res) => {
     try {
 
         let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
-
-        res.status(201).send(insta);
-
+        if (!insta)
+            res.status(200).send({ message: 'Essa conta não existe.' })
+        else {
+            var retorno = insta.toJSON();
+            delete retorno._id
+            delete retorno.__v
+            res.status(201).send(retorno);
+        }
     } catch (e) {
 
         res.status(500).send({ message: 'Erro ao buscar conta: ' + e.message });
@@ -191,8 +198,19 @@ exports.GetAll = async (req, res) => {
 
         let contas = await Instagram.find({ Token: req.body.Token })
 
-        res.status(200).send(contas);
-
+        if (!contas)
+            res.status(200).send({ message: 'Não existe contas cadastradas com esse Usuario.' })
+        else {
+            var aux;
+            let list = new Array();
+            for (let i = 0; i < contas.length; i++) {
+                aux = contas[i].toJSON();
+                delete aux._id;
+                delete aux.__v;
+                list.push(aux);
+            }
+            res.status(200).send(list);
+        }
     } catch (e) {
 
         res.status(500).send({ message: 'Erro ao buscar contas: ' + e.message });

@@ -17,7 +17,7 @@ exports.ReturnValidate = async (req, res) => {
 
     } catch (e) {
 
-        res.status(500).send({ message: 'Erro ao buscar validade: ' + e.message });
+        res.status(500).send({ Aquisicao: 'Erro ao buscar validade: ' + e.message, Final: ' ', Dias: 0 });
 
     }
 
