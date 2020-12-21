@@ -3,7 +3,16 @@ const Grupo = mongoose.model('Grupo');
 const User = mongoose.model('User');
 const Delay = mongoose.model('Delay');
 const md5 = require('md5');
-
+/*
+    Navegador 1 = Google
+    Navegador 2 = Brave
+    Navegador 3 = API
+    Plataforma 1 = GNI
+    Plataforma 2 = Kzom
+    Plataforma 3 = SigaSocial
+    Plataforma 4 = Dizu
+    Plataforma 5 = FarmaSocial
+*/
 exports.Get = async (req, res) => {
 
     try {
