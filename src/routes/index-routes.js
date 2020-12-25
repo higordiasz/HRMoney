@@ -10,4 +10,8 @@ router.get('/packages', (req, res, next) => {
   res.render('packages', {page: 'Home', menuId: 'home'})
 });
 
+router.get('/download', (req, res, next) => {
+  res.render('download', {page: 'Home', menuId: 'home'})
+});
+
 module.exports = router;

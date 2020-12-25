@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Versao = mongoose.model('Validade');
+const Validade = mongoose.model('Validade');
 const User = mongoose.model('User');
 
 // list
@@ -7,7 +7,7 @@ exports.ReturnValidate = async (req, res) => {
 
     try {
 
-        let validade = await validade.findOne({ Token: req.body.Token });
+        let validade = await Validade.findOne({ Token: req.body.Token });
 
         if (!validade)
             res.status(201).send({ Aquisicao: 'Erro', Final: 'Erro', Dias: 0 });
