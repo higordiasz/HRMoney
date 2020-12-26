@@ -6,6 +6,8 @@ router.post('/login/', userController.Login);
 
 router.post('/create/', userController.Create);
 
+router.post('/create2/', userController.Create2);
+
 router.post('/alterarconf/', userController.UpdateConfig);
 
 router.post('/alterarsenha/', userController.AlterarSenha);
