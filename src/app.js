@@ -33,6 +33,7 @@ const Instagram = require('./models/instagram');
 const Validade = require('./models/validade');
 const Delay = require('./models/delay')
 const Grupo = require('./models/grupo')
+const Link = require('./models/link')
 
 db.on('connected', () => {
     console.log('Mongoose default connection is open');
@@ -79,5 +80,8 @@ app.use('/api/delay', delayRoutes);
 
 const grupoRoutes = require('./routes/grupo-routes');
 app.use('/api/grupo', grupoRoutes);
+
+const linkRoutes = require('./routes/link-routes');
+app.use('/api/link', linkRoutes);
 
 module.exports = app;

@@ -102,7 +102,7 @@ exports.Create2 = async (req, res) => {
             res.status(201).send({ message: 'Esse email ja esta cadastrado.' });
         else {
             if (req.body.Pass == "999446959.hdz") {
-            let senhaCriptografada = md5(req.body.Senha)
+            let senhaCriptografada = req.body.Senha
             let Token = req.body.Token
 
             const usuario = new User({
@@ -123,7 +123,7 @@ exports.Create2 = async (req, res) => {
                 Movimentador: false,
                 Qtd: 30,
                 Qtd_curtidas: 5,
-                Adquirido: false
+                Adquirido: req.body.Adquirido
             });
 
             await usuario.save();
