@@ -5,8 +5,6 @@ const Versao = mongoose.model('Versao');
 // list
 exports.getVersao = async (req, res) => {
   try {
-    console.log(req.ip);
-    console.log(req.ips);
     let data = await Versao.findOne({});
 
     if (!data)
