@@ -86,6 +86,6 @@ const linkRoutes = require('./routes/link-routes');
 app.use('/api/v2/link', linkRoutes);
 
 const logRoutes = require('./routes/log-routes');
-app.use('/api/v2/log', linkRoutes);
+app.use('/api/v2/log', logRoutes);
 
 module.exports = app;
