@@ -7,7 +7,7 @@ require('dotenv').config();
 // App
 const app = express();
 
-
+app.set('trust proxy', true)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')))
@@ -61,27 +61,27 @@ const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);
 
 const versaoRoutes = require('./routes/versao-routes');
-app.use('/api/versao', versaoRoutes);
+app.use('/api/v2/versao', versaoRoutes);
 
 const userRoutes = require('./routes/user-routes');
-app.use('/api/user', userRoutes);
+app.use('/api/v2/user', userRoutes);
 
 const gratuitoRoutes = require('./routes/gratuito-routes');
-app.use('/api/gratuito', gratuitoRoutes);
+app.use('/api/v2/gratuito', gratuitoRoutes);
 
 const instagramRoutes = require('./routes/instagram-routes');
-app.use('/api/instagram', instagramRoutes);
+app.use('/api/v2/instagram', instagramRoutes);
 
 const validadeRoutes = require('./routes/validade-routes');
-app.use('/api/validade', validadeRoutes);
+app.use('/api/v2/validade', validadeRoutes);
 
 const delayRoutes = require('./routes/delay-routes');
-app.use('/api/delay', delayRoutes);
+app.use('/api/v2/delay', delayRoutes);
 
 const grupoRoutes = require('./routes/grupo-routes');
-app.use('/api/grupo', grupoRoutes);
+app.use('/api/v2/grupo', grupoRoutes);
 
 const linkRoutes = require('./routes/link-routes');
-app.use('/api/link', linkRoutes);
+app.use('/api/v2/link', linkRoutes);
 
 module.exports = app;
