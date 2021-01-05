@@ -61,27 +61,27 @@ const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);
 
 const versaoRoutes = require('./routes/versao-routes');
-app.use('/api/v2/versao', versaoRoutes);
+app.use('/api/versao', versaoRoutes);
 
 const userRoutes = require('./routes/user-routes');
-app.use('/api/v2/user', userRoutes);
+app.use('/api/user', userRoutes);
 
 const gratuitoRoutes = require('./routes/gratuito-routes');
-app.use('/api/v2/gratuito', gratuitoRoutes);
+app.use('/api/gratuito', gratuitoRoutes);
 
 const instagramRoutes = require('./routes/instagram-routes');
-app.use('/api/v2/instagram', instagramRoutes);
+app.use('/api/instagram', instagramRoutes);
 
 const validadeRoutes = require('./routes/validade-routes');
-app.use('/api/v2/validade', validadeRoutes);
+app.use('/api/validade', validadeRoutes);
 
 const delayRoutes = require('./routes/delay-routes');
-app.use('/api/v2/delay', delayRoutes);
+app.use('/api/delay', delayRoutes);
 
 const grupoRoutes = require('./routes/grupo-routes');
-app.use('/api/v2/grupo', grupoRoutes);
+app.use('/api/grupo', grupoRoutes);
 
 const linkRoutes = require('./routes/link-routes');
-app.use('/api/v2/link', linkRoutes);
+app.use('/api/link', linkRoutes);
 
 module.exports = app;
