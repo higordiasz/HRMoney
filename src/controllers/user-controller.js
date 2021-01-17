@@ -22,13 +22,13 @@ exports.Login = async (req, res) => {
         let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
 
         if (Usuario.length >= 1) {
-            if (Usuario.Adquirido == false) {
-                res.status(200).send({ message: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!" })
-            } else {
+            if (Usuario[0].Adquirido) {
                 let retorno = Usuario[0].toJSON();
                 delete retorno._id;
                 delete retorno.__v;
                 res.status(200).send(retorno)
+            } else {
+                res.status(200).send({ message: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!" })
             }
         }
         else
