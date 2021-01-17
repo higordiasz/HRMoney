@@ -14,7 +14,7 @@ Sistemas:
 9 - Assistir Story - ok
 10 - Deletar Conta Instagram - ok
 11 - Seguidores Conta Antiga - ok
-12 - 
+12 - Login no GNI TikTOk
 13 - 
 14 - 
 15 - 

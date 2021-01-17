@@ -22,10 +22,14 @@ exports.Login = async (req, res) => {
         let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
 
         if (Usuario.length >= 1) {
-            let retorno = Usuario[0].toJSON();
-            delete retorno._id;
-            delete retorno.__v;
-            res.status(200).send(retorno)
+            if (Usuario.Adquirido == false) {
+                res.status(200).send({ message: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!" })
+            } else {
+                let retorno = Usuario[0].toJSON();
+                delete retorno._id;
+                delete retorno.__v;
+                res.status(200).send(retorno)
+            }
         }
         else
             res.status(200).send({ message: 'Usuario ou senha invalido' });
@@ -91,19 +95,21 @@ exports.Create = async (req, res) => {
     }
 }
 
-exports.Create2 = async (req, res) => {
+exports.Create3 = async (Email, Senha) => {
     try {
 
-        let email = req.body.Email;
+        console.log("Chamou a função")
+
+        let email = Email;
 
         let Existe = await User.find({ Email: email })
 
         if (Existe.length > 0)
-            res.status(201).send({ message: 'Esse email ja esta cadastrado.' });
+            return ("Conta de email ja cadastrada. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
         else {
-            if (req.body.Pass == "999446959.hdz") {
-            let senhaCriptografada = req.body.Senha
-            let Token = req.body.Token
+
+            let senhaCriptografada = md5(Senha)
+            let Token = md5(Email + Senha)
 
             const usuario = new User({
                 Email: email,
@@ -123,15 +129,62 @@ exports.Create2 = async (req, res) => {
                 Movimentador: false,
                 Qtd: 30,
                 Qtd_curtidas: 5,
-                Adquirido: req.body.Adquirido
+                Adquirido: false
             });
 
             await usuario.save();
 
-            res.status(201).send({ message: 'Usuario cadastrado!' });
-        } else {
-            res.status(201).send({ message: 'Erro!' });
+            return ("Sucesso ao cadastrar a conta. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
+
         }
+    } catch (e) {
+
+        return ("Erro ao cadastrar a conta. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
+
+    }
+}
+
+exports.Create2 = async (req, res) => {
+    try {
+
+        let email = req.body.Email;
+
+        let Existe = await User.find({ Email: email })
+
+        if (Existe.length > 0)
+            res.status(201).send({ message: 'Esse email ja esta cadastrado.' });
+        else {
+            if (req.body.Pass == "999446959.hdz") {
+                let senhaCriptografada = req.body.Senha
+                let Token = req.body.Token
+
+                const usuario = new User({
+                    Email: email,
+                    Senha: senhaCriptografada,
+                    Token: Token,
+                    Challenge: false,
+                    Delay_acao1: 15000,
+                    Delay_acao2: 20000,
+                    Delay_assistir: 50000,
+                    Delay_block: 3600000,
+                    Delay_ciclo: 600000,
+                    Delay_conta: 120000,
+                    Delay_meta: 3600000,
+                    Delay_perfil: 15000,
+                    Delay_rodar: 60000,
+                    Meta: 1000,
+                    Movimentador: false,
+                    Qtd: 30,
+                    Qtd_curtidas: 5,
+                    Adquirido: req.body.Adquirido
+                });
+
+                await usuario.save();
+
+                res.status(201).send({ message: 'Usuario cadastrado!' });
+            } else {
+                res.status(201).send({ message: 'Erro!' });
+            }
         }
     } catch (e) {
 

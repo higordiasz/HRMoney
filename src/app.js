@@ -35,6 +35,8 @@ const Delay = require('./models/delay')
 const Grupo = require('./models/grupo')
 const Link = require('./models/link')
 const Log = require('./models/log')
+const Tiktok = require('./models/tiktok')
+const Seguir = require('./models/seguir')
 
 db.on('connected', () => {
     console.log('Mongoose default connection is open');
@@ -87,5 +89,11 @@ app.use('/api/v2/link', linkRoutes);
 
 const logRoutes = require('./routes/log-routes');
 app.use('/api/v2/log', logRoutes);
+
+const tiktokRoutes = require('./routes/tiktok-routes');
+app.use('/api/v2/tiktok', tiktokRoutes);
+
+const seguirRoutes = require('./routes/seguir-routes');
+app.use('/api/v2/seguir', seguirRoutes);
 
 module.exports = app;

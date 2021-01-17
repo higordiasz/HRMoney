@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const linkController = require('../controllers/link-controller');
 const path = require('path')
+const User = require('../controllers/user-controller')
+
+function CadastrarConta(Email, Senha) {
+  return User.Create3(Email, Senha)
+};
 
 router.get('/', (req, res, next) => {
   res.render('index', {page: 'Home', menuId: 'home'})
@@ -22,6 +27,10 @@ router.get('/download', async (req, res, next) => {
   } catch {
     res.render('download', {Mega: "<a href=\"" + "Erro API" + "\" class=\"borders-btn\">Download</a>", Media: "<a href=\"" + "Erro API" + "\" class=\"borders-btn\">Download</a>", Drive: "<a href=\"" + "Erro API" + "\" class=\"borders-btn\">Download</a>"})
   }
+});
+
+router.get('/registro', (req, res, next) => {
+  res.render('registro')
 });
 
 module.exports = router;

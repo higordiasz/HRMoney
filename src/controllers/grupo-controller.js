@@ -12,6 +12,8 @@ const md5 = require('md5');
     Plataforma 3 = SigaSocial
     Plataforma 4 = Dizu
     Plataforma 5 = FarmaSocial
+    Plataforma 6 = GNI TikTok
+    Plataforma 7 = Dizu TikTok
 */
 exports.Get = async (req, res) => {
 
@@ -104,7 +106,7 @@ exports.Alterar = async (req, res) => {
                     grupo.Configdelay = req.body.Configdelay;
                     grupo.Nomedelay = req.body.Nomedelay;
                     grupo.save();
-                    res.status(200).send({message: 'Conta alterada com sucesso!'})
+                    res.status(200).send({message: 'Grupo alterado com sucesso!'})
                 }
             } else {
                 grupo.Nome = req.body.Nome;
@@ -120,7 +122,7 @@ exports.Alterar = async (req, res) => {
                     grupo.Senhaplataforma = req.body.Senhaplataforma;
                     grupo.Configdelay = req.body.Configdelay;
                     grupo.save();
-                    res.status(200).send({message: 'Conta alterada com sucesso!'})
+                    res.status(200).send({message: 'Grupo alterado com sucesso!'})
             }
         }
     } catch (e) {
