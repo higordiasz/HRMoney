@@ -14,6 +14,14 @@ const TtSchema = new Schema({
         type: String,
         required: true
       },
+      Username: {
+        type: String,
+        required: true
+      },
+      Plataforma: {
+        type: Number,
+        required: true
+      },
       Ganhar: {
         type: Boolean,
         required: true

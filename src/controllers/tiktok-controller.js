@@ -108,23 +108,7 @@ exports.Create = async (req, res) => {
             if (existe != null)
                 res.status(201).send({ message: 'Conta já cadastrada no sistema.' })
             else {
-                let insta = new Tiktok({
-                    Token: req.body.Token,
-                    Conta: req.body.Conta,
-                    Senha: req.body.Senha,
-                    Ganhar: req.body.Ganhar,
-                    Siga: req.body.Siga,
-                    Kzom: req.body.Kzom,
-                    Dizu: req.body.Dizu,
-                    Farma: req.body.Farma,
-                    Broad: req.body.Broad,
-                    Everve: req.body.Everve,
-                    Challenge: req.body.Challenge,
-                    Block: req.body.Block,
-                    Seguir: req.body.Seguir,
-                    Curtir: req.body.Curtir,
-                    Meta: req.body.Meta
-                })
+                let insta = new Tiktok(req.body)
 
                 insta.save();
 
@@ -158,6 +142,8 @@ exports.Alterar = async (req, res) => {
             else {
                 insta.Token = req.body.Token
                 insta.Conta = req.body.Conta
+                insta.Username = req.body.Username
+                insta.Plataforma = req.body.Plataforma
                 insta.Senha = req.body.Senha
                 insta.Ganhar = req.body.Ganhar
                 insta.Siga = req.body.Siga
