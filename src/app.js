@@ -37,6 +37,8 @@ const Link = require('./models/link')
 const Log = require('./models/log')
 const Tiktok = require('./models/tiktok')
 const Seguir = require('./models/seguir')
+const Sha1 = require('./models/sha1')
+const Session = require('./models/sessiongni')
 
 db.on('connected', () => {
     console.log('Mongoose default connection is open');
@@ -95,5 +97,8 @@ app.use('/api/v2/tiktok', tiktokRoutes);
 
 const seguirRoutes = require('./routes/seguir-routes');
 app.use('/api/v2/seguir', seguirRoutes);
+
+const gniRoutes = require('./routes/gni-routes');
+app.use('/api/v2/gni', gniRoutes);
 
 module.exports = app;
