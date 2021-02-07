@@ -101,4 +101,7 @@ app.use('/api/v2/seguir', seguirRoutes);
 const gniRoutes = require('./routes/gni-routes');
 app.use('/api/v2/gni', gniRoutes);
 
+const sigaRoutes = require('./routes/siga-routes');
+app.use('/api/v2/siga', sigaRoutes);
+
 module.exports = app;
