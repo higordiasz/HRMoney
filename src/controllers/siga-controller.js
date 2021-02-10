@@ -36,10 +36,10 @@ exports.loginSiga = async (req, res) => {
                 res.status(200).send({Status: 0, message: dado.error});
             }
         } else {
-            res.status(200).send({Status: 0, message: "Requisição invalida"});
+            res.status(200).send({Status: -1, message: "Requisição invalida"});
         }
     } catch (e) {
-        res.status(500).send({Status: 0, message: e.message });
+        res.status(500).send({Status: -1, message: e.message });
     }
 };
 
@@ -75,13 +75,13 @@ exports.checkProfile = async (req, res) => {
             if (obj.username != null) {
                 res.status(200).send({Status: 1, message: "Usuario encontrado na plataforma"});
             } else {
-                res.status(200).send({Status: 0, message: "Não foi possui localizar essa conta na plataforma"});
+                res.status(200).send({Status: 0, message: "Não foi possui localizar essa conta na plataforma, confirme se a mesma está cadastrada corretamente"});
             }
         } else {
-            res.status(200).send({Status: 0, message: "Requisição invalida"});
+            res.status(200).send({Status: -1, message: "Requisição invalida"});
         }
     } catch {
-        res.status(500).send({Status: 0, message: "Não foi possui localizar essa conta na plataforma" });
+        res.status(500).send({Status: -1, message: "Não foi possui localizar essa conta na plataforma" });
     }
 }
 
@@ -118,10 +118,10 @@ exports.findTask = async (req, res) => {
                 res.status(200).send({Status: 0, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Tipo: "nada", Link: "nada"});
             }
         } else {
-            res.status(200).send({Status: 0, message: "Requisição invalida", Id: "nada", Tipo: "nada", Link: "nada"});
+            res.status(200).send({Status: -1, message: "Requisição invalida", Id: "nada", Tipo: "nada", Link: "nada"});
         }
     } catch {
-        res.status(500).send({Status: 0, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Tipo: "nada", Link: "nada" });
+        res.status(500).send({Status: -1, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Tipo: "nada", Link: "nada" });
     }
 }
 
@@ -156,13 +156,13 @@ exports.confirmTask = async (req, res) => {
             if (dado.status == 'success') {
                 res.status(200).send({Status: 1, message: "Tarefa confirmada com sucesso.", Id: dado.id, Ganho: dado.earned, TaskID: dado.taskid});
             } else {
-                res.status(200).send({Status: 0, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Ganho: 0, TaskID: "nada"});
+                res.status(200).send({Status: 0, message: "Não foi possui localizar essa tarefa para confirmar na plataforma", Id: "nada", Ganho: 0, TaskID: "nada"});
             }
         } else {
-            res.status(200).send({Status: 0, message: "Requisição invalida", Id: "nada", Ganho: 0, TaskID: "nada"});
+            res.status(200).send({Status: -1, message: "Requisição invalida", Id: "nada", Ganho: 0, TaskID: "nada"});
         }
     } catch {
-        res.status(500).send({Status: 0, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Ganho: 0, TaskID: "nada"});
+        res.status(500).send({Status: -1, message: "Não foi possui localizar tarefa para essa conta na plataforma", Id: "nada", Ganho: 0, TaskID: "nada"});
     }
 }
 
@@ -197,12 +197,12 @@ exports.jumpTask = async (req, res) => {
             if (dado.success != null) {
                 res.status(200).send({Status: 1, message: "Tarefa pulada com sucesso."});
             } else {
-                res.status(200).send({Status: 0, message: "Não foi possui pular tarefa."});
+                res.status(200).send({Status: 0, message: "Não foi possui pular essa tarefa."});
             }
         } else {
-            res.status(200).send({Status: 0, message: "Requisição invalida"});
+            res.status(200).send({Status: -1, message: "Requisição invalida"});
         }
     } catch {
-        res.status(500).send({Status: 0, message: "Não foi possui pular essa tarefa."});
+        res.status(500).send({Status: -1, message: "Não foi possui pular essa tarefa."});
     }
 }
