@@ -12,4 +12,6 @@ router.post('/confirm', sigaController.confirmTask);
 
 router.post('/pular/', sigaController.jumpTask);
 
+router.post('/getsiga/', sigaController.GetKey);
+
 module.exports = router;

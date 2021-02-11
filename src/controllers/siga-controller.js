@@ -222,6 +222,6 @@ exports.GetKey = async (req, res) => {
             res.status(200).send({Status: 0, Sdes: "nada", Sdes2: "nada"})
         }
     } catch {
-
+        res.status(200).send({Status: 0, Sdes: "nada", Sdes2: "nada"})
     }
 }
