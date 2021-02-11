@@ -1,5 +1,7 @@
 const fetch = require('node-fetch');
 const fernet = require('fernet');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 const apiKey = "0e51f39b80ff032d41a8f7ccaea1844a";
 var secret = new fernet.Secret('wC7ZrznTbamLzOJ-xCd2Eiq6SaY0CC8oz8iXBSNbfXQ=');
 // list
@@ -204,5 +206,22 @@ exports.jumpTask = async (req, res) => {
         }
     } catch {
         res.status(500).send({Status: -1, message: "Não foi possui pular essa tarefa."});
+    }
+}
+
+//Request: {"Token":"", "Senha":"", "Email":"", "Sistema":""}
+exports.GetKey = async (req, res) => {
+    try {
+        if(await User.findOne({Token: req.body.Token}) != null) {
+            if(req.body.Senha.indexOf("sigasocialhrmoney") != -1) {
+                res.status(200).send({Status: 1, Sdes: "wC7ZrznTbamLzOJ-xCd2Eiq6SaY0CC8oz8iXBSNbfXQ=", Sdes2: apiKey})
+            } else {
+                res.status(200).send({Status: 0, Sdes: "nada", Sdes2: "nada"})
+            }
+        } else  {
+            res.status(200).send({Status: 0, Sdes: "nada", Sdes2: "nada"})
+        }
+    } catch {
+
     }
 }
