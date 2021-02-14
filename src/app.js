@@ -66,42 +66,42 @@ const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);
 
 const versaoRoutes = require('./routes/versao-routes');
-app.use('/api/v2/versao', versaoRoutes);
+app.use('/api/hrmoneyapi123/versao', versaoRoutes);
 
 const userRoutes = require('./routes/user-routes');
-app.use('/api/v2/user', userRoutes);
+app.use('/api/hrmoneyapi123/user', userRoutes);
 
 const gratuitoRoutes = require('./routes/gratuito-routes');
-app.use('/api/v2/gratuito', gratuitoRoutes);
+app.use('/api/hrmoneyapi123/gratuito', gratuitoRoutes);
 
 const instagramRoutes = require('./routes/instagram-routes');
-app.use('/api/v2/instagram', instagramRoutes);
+app.use('/api/hrmoneyapi123/instagram', instagramRoutes);
 
 const validadeRoutes = require('./routes/validade-routes');
-app.use('/api/v2/validade', validadeRoutes);
+app.use('/api/hrmoneyapi123/validade', validadeRoutes);
 
 const delayRoutes = require('./routes/delay-routes');
-app.use('/api/v2/delay', delayRoutes);
+app.use('/api/hrmoneyapi123/delay', delayRoutes);
 
 const grupoRoutes = require('./routes/grupo-routes');
-app.use('/api/v2/grupo', grupoRoutes);
+app.use('/api/hrmoneyapi123/grupo', grupoRoutes);
 
 const linkRoutes = require('./routes/link-routes');
-app.use('/api/v2/link', linkRoutes);
+app.use('/api/hrmoneyapi123/link', linkRoutes);
 
 const logRoutes = require('./routes/log-routes');
-app.use('/api/v2/log', logRoutes);
+app.use('/api/hrmoneyapi123/log', logRoutes);
 
 const tiktokRoutes = require('./routes/tiktok-routes');
-app.use('/api/v2/tiktok', tiktokRoutes);
+app.use('/api/hrmoneyapi123/tiktok', tiktokRoutes);
 
 const seguirRoutes = require('./routes/seguir-routes');
-app.use('/api/v2/seguir', seguirRoutes);
+app.use('/api/hrmoneyapi123/seguir', seguirRoutes);
 
 const gniRoutes = require('./routes/gni-routes');
-app.use('/api/v2/gni', gniRoutes);
+app.use('/api/hrmoneyapi123/gni', gniRoutes);
 
 const sigaRoutes = require('./routes/siga-routes');
-app.use('/api/v2/siga', sigaRoutes);
+app.use('/api/hrmoneyapi123/siga', sigaRoutes);
 
 module.exports = app;
