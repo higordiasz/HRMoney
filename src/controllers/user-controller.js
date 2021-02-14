@@ -95,6 +95,52 @@ exports.Create = async (req, res) => {
     }
 }
 
+exports.CreateSite = async (req, res) => {
+    try {
+
+        let email = req.body.email;
+
+        let Existe = await User.find({ Email: email })
+
+        if (Existe.length > 0)
+        return 2;
+        else {
+            if (req.body.pass == req.body.passre) {
+                let senhaCriptografada = md5(req.body.pass)
+                let Token = md5(req.body.email + req.body.pass)
+                const usuario = new User({
+                    Email: email,
+                    Senha: senhaCriptografada,
+                    Token: Token,
+                    Challenge: false,
+                    Delay_acao1: 15000,
+                    Delay_acao2: 20000,
+                    Delay_assistir: 50000,
+                    Delay_block: 3600000,
+                    Delay_ciclo: 600000,
+                    Delay_conta: 120000,
+                    Delay_meta: 3600000,
+                    Delay_perfil: 15000,
+                    Delay_rodar: 60000,
+                    Meta: 1000,
+                    Movimentador: false,
+                    Qtd: 30,
+                    Qtd_curtidas: 5,
+                    Adquirido: false
+                });
+
+                await usuario.save();
+
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    } catch (e) {
+        return 0;
+    }
+}
+
 exports.Create3 = async (Email, Senha) => {
     try {
 

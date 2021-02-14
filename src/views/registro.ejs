@@ -11,6 +11,35 @@
 	<link href="assets/css/style2.css" rel="stylesheet">
 	<link href="assets/css/swiper.min.css" rel="stylesheet">
 	<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+	<script>
+		$(document).ready(function() {
+	 
+		 $('#btnCadastrar').click(function(){
+	 
+				 var dataString = $('#FormCadastro').serialize();
+				console.log('To aqui')
+				 $.ajax({
+					 type:"post",
+					 url:"registroite",
+					 data: dataString,
+					 success: function(data){
+	 
+						 $("#result").text(data);
+						 /*****nesse if o valor deve ser exatamente igual ao 
+						 ao echo da pagina processamento.php ao ser realizado o cadastro com sucesso
+						 ******/
+						 if(data=="Cadastro realizado com sucesso!!"){
+							 $("#atuar").html('<br><a href="https://google.com"><button class="btn"><i class="fa fa-download"></i> Download</button></a>');
+						 }
+	 
+						 $("#myModal").modal('show');
+					 }
+				 });
+				 event.preventDefault();
+		 });
+		});
+	 
+	 </script>
 </head>
 
 <body>
@@ -61,10 +90,10 @@
 	<div class="regBlock">
 		<div class="container">
 			<h1>CADASTRE-SE</h1>
-			<form class="registration">
+			<form class="registration" id="FormCadastro" method="POST" action="registro">
 				<div class="formGroup">
 					<span class="formGroup-name">E-mail</span>
-					<input type="text" name="e-mail" id="email">
+					<input type="text" name="email" id="email">
 				</div>
 				<div class="formGroup formGroup-2">
 					<div>
@@ -73,11 +102,12 @@
 					</div>
 					<div>
 						<span class="formGroup-name">Confirmar senha</span>
-						<input type="password" name="pass-re" id="csenha">
+						<input type="password" name="passre" id="csenha">
 					</div>
 				</div>
+				</p><%- Cadastro %>
 				<div class="regButton flex-c">
-					<button>Registrar</button>
+					<button type="submit" id="btnCadastrar">Registrar</button>
 					</div>
 				</div>
 			</form>
@@ -91,5 +121,7 @@
 	<script src="assets/js/swiper.min.js"></script>
 	<script src="assets/js/parallax.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 </body>
 </html>
