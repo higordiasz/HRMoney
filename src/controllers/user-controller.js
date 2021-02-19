@@ -39,6 +39,26 @@ exports.Login = async (req, res) => {
     }
 };
 
+exports.LoginApp = async (req, res) => {
+    try {
+
+        let senha = md5(req.body.Senha);
+
+        let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
+
+        if (Usuario.length >= 1) {
+            let retorno = Usuario[0].toJSON();
+            delete retorno._id;
+            delete retorno.__v;
+            res.status(200).send(retorno)
+        }
+        else
+            res.status(200).send({ message: 'Usuario ou senha invalido' });
+
+    } catch (e) {
+        res.status(500).send({ message: 'Erro ao realizar login.' });
+    }
+};
 
 /*
 
@@ -103,7 +123,7 @@ exports.CreateSite = async (req, res) => {
         let Existe = await User.find({ Email: email })
 
         if (Existe.length > 0)
-        return 2;
+            return 2;
         else {
             if (req.body.pass == req.body.passre) {
                 let senhaCriptografada = md5(req.body.pass)

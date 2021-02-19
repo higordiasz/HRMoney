@@ -4,6 +4,8 @@ const userController = require('../controllers/user-controller');
 
 router.post('/login/', userController.Login);
 
+router.post('/loginapp/', userController.LoginApp);
+
 //router.post('/create/', userController.Create);
 
 //router.post('/create2/', userController.Create2);
