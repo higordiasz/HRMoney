@@ -41,6 +41,7 @@ exports.loginSiga = async (req, res) => {
             res.status(200).send({Status: -1, message: "Requisição invalida"});
         }
     } catch (e) {
+        console.log(e)
         res.status(500).send({Status: -1, message: e.message });
     }
 };
@@ -212,7 +213,7 @@ exports.jumpTask = async (req, res) => {
 //Request: {"Token":"", "Senha":"", "Email":"", "Sistema":""}
 exports.GetKey = async (req, res) => {
     try {
-        if(await User.findOne({Token: req.body.Token}) != null) {
+        if(await User.findOne({token: req.body.Token}) != null) {
             if(req.body.Senha.indexOf("sigasocialhrmoney") != -1) {
                 res.status(200).send({Status: 1, Sdes: "wC7ZrznTbamLzOJ-xCd2Eiq6SaY0CC8oz8iXBSNbfXQ=", Sdes2: apiKey})
             } else {

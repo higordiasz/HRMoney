@@ -1,116 +1,191 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const License = mongoose.model('License');
 const md5 = require('md5');
 const nodemailer = require('nodemailer');
-
+const fetch = require('node-fetch');
 
 // list
 /*
 
 Request:  
 {
-    Email:"",
-    Senha:""
+    username:"",
+    senha:""
 }
 
 */
-exports.Login = async (req, res) => {
+exports.LoginBot = async (req, res) => {
     try {
 
-        let senha = md5(req.body.Senha);
+        let senha = md5(req.body.senha);
 
-        let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
+        let Usuario = await User.find({ email: req.body.email, senha: senha });
 
         if (Usuario.length >= 1) {
             if (Usuario[0].Adquirido) {
                 let retorno = Usuario[0].toJSON();
                 delete retorno._id;
                 delete retorno.__v;
-                res.status(200).send(retorno)
+                res.status(200).send({ error: "", data: [retorno] })
             } else {
-                res.status(200).send({ message: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!" })
+                res.status(200).send({ error: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!", data: [] })
             }
         }
-        else
-            res.status(200).send({ message: 'Usuario ou senha invalido' });
+        else {
+            Usuario = await User.find({ username: req.body.username, senha: senha });
+            if (Usuario.length >= 1) {
+                if (Usuario[0].Adquirido) {
+                    let retorno = Usuario[0].toJSON();
+                    delete retorno._id;
+                    delete retorno.__v;
+                    res.status(200).send({ error: "", data: [retorno] })
+                } else {
+                    res.status(200).send({ error: "Ainda não adquirido ou licença expirada. Entre em contato no WhatsApp: 27 999446959 para adquirir ou renovar o bot!", data: [] })
+                }
+            }
+            else
+                res.status(200).send({ error: 'Usuario ou senha invalido', data: [] });
+        }
 
     } catch (e) {
-        res.status(500).send({ message: 'Erro ao realizar login.' });
+        res.status(500).send({ error: 'Erro ao realizar login.', data: [] });
     }
 };
 
-exports.LoginApp = async (req, res) => {
+exports.loginSistema = async (req, res, next) => {
     try {
+        let json = req.body;
+        let pass = md5(json.password);
+        let usuario = await User.findOne({ email: json.email, senha: pass });
+        if (!usuario) {
+            res.status(200).send({ erro: 'Email não cadastrado no sistema.', data: [] });
+        } else {
+            if (await License.findOne({ sistema: json.sistema, token: usuario.token }) != null) {
+                let retorno = usuario.toJSON();
+                delete retorno._id;
+                delete retorno.__v;
+                res.status(200).send({ error: "", data: [retorno] })
+            } else {
+                res.status(200).send({ erro: "Não possui licença para usar esse sistema.", data: [] });
+            }
+        }
+    } catch (e) {
+        res.status(500).send({ erro: 'Não foi possivel fazer login', data: [] })
+    }
+}
 
-        let senha = md5(req.body.Senha);
+exports.CheckToken = async (req, res) => {
+    try {
+        let user = await User.findOne({ token: req.body.token });
+        if (user) {
+            let retorno = user.toJSON();
+            delete retorno._id;
+            delete retorno.__v;
+            res.status(200).send({ error: '', data: [retorno] });
+        } else {
+            res.status(200).send({ error: 'Token não existe', data: [] });
+        }
+    } catch {
+        res.status(200).send({ error: 'Token não existe', data: [] });
+    }
+}
 
-        let Usuario = await User.find({ Email: req.body.Email, Senha: senha });
+//Req = {"username":"higordiasz"}
+exports.GetPostsLink = async (req, res) => {
+    try {
+        var data = await fetch(`https://www.instagram.com/${req.body.username}/?__a=1`)
+            .then(res => res.json())
+            .then(json => json);
+        if (data != null) {
+            var nodes = data.graphql.user.edge_owner_to_timeline_media.edges
+            var data = [];
+            nodes.forEach(n => {
+                data.push(n.node.display_url)
+            })
+            res.status(200).send({ error: 'Cheguei aqui', data: data })
+        } else {
+            res.status(200).send({ error: 'Erro ao pegar os post deste perfil', data: [] })
+        }
+    } catch (err) {
+        res.status(200).send({ error: 'Erro ao pegar os posts ' + err, data: [] })
+    }
+}
+
+exports.LoginConfig = async (req, res) => {
+    try {
+        let senha = md5(req.body.password);
+
+        let Usuario = await User.find({ email: req.body.username, senha: senha });
 
         if (Usuario.length >= 1) {
             let retorno = Usuario[0].toJSON();
             delete retorno._id;
             delete retorno.__v;
-            res.status(200).send(retorno)
+            res.status(200).send({ error: "", data: [retorno] })
         }
-        else
-            res.status(200).send({ message: 'Usuario ou senha invalido' });
+        else {
+            Usuario = await User.find({ username: req.body.username, senha: senha });
+            if (Usuario.length >= 1) {
+                let retorno = Usuario[0].toJSON();
+                delete retorno._id;
+                delete retorno.__v;
+                res.status(200).send({ error: "", data: [retorno] })
+            }
+            else
+                res.status(200).send({ error: 'Usuario ou senha invalido', data: [] });
+        }
 
     } catch (e) {
-        res.status(500).send({ message: 'Erro ao realizar login.' });
+        res.status(500).send({ error: 'Erro ao realizar login.', data: [] });
     }
 };
 
-/*
-
-Request:  
-{
-    Email:"",
-    Senha:""
-}
-
-*/
 exports.Create = async (req, res) => {
     try {
 
-        let email = req.body.Email;
+        let email = req.body.email;
 
-        let Existe = await User.find({ Email: email })
+        let Existe = await User.find({ email: email })
 
         if (Existe.length > 0)
-            res.status(201).send({ message: 'Esse email ja esta cadastrado.' });
+            res.status(201).send({ error: 'Esse email ja esta cadastrado.', data: [] });
         else {
+            username = req.body.username;
+            Existe = await User.find({ username: username })
+            if (Existe.length > 0) {
+                res.status(201).send({ error: 'Esse username ja esta cadastrado.', data: [] });
+            } else {
+                let senhaCriptografada = md5(req.body.senha)
+                let Token = md5(req.body.email + req.body.username)
 
-            let senhaCriptografada = md5(req.body.Senha)
-            let Token = md5(req.body.Email + req.body.Senha)
+                const usuario = new User({
+                    username: req.body.username,
+                    codigo_ind: req.body.codigo_ind,
+                    codigo: req.body.username,
+                    avatar: "",
+                    email: email,
+                    senha: senhaCriptografada,
+                    token: Token,
+                    pontos: 0,
+                    adquirido: false
+                });
+                if (req.body.avatar != null) {
+                    usuario.avatar = req.body.avatar
+                } else {
+                    usuario.avatar = "https://i.imgur.com/CtlS8h7.jpg"
+                }
 
-            const usuario = new User({
-                Email: email,
-                Senha: senhaCriptografada,
-                Token: Token,
-                Challenge: false,
-                Delay_acao1: 15000,
-                Delay_acao2: 20000,
-                Delay_assistir: 50000,
-                Delay_block: 3600000,
-                Delay_ciclo: 600000,
-                Delay_conta: 120000,
-                Delay_meta: 3600000,
-                Delay_perfil: 15000,
-                Delay_rodar: 60000,
-                Meta: 1000,
-                Movimentador: false,
-                Qtd: 30,
-                Qtd_curtidas: 5,
-                Adquirido: false
-            });
-
-            await usuario.save();
-
-            res.status(201).send({ message: 'Usuario cadastrado!' });
+                await usuario.save();
+                let retorno = usuario.toJSON();
+                delete retorno._id;
+                delete retorno.__v;
+                res.status(201).send({ error: '', data: [retorno] });
+            }
         }
     } catch (e) {
 
-        res.status(500).send({ message: 'Falha ao cadastrar o usuario! Erro: ' + e.message });
+        res.status(500).send({ error: 'Falha ao cadastrar o usuario! Erro: ' + e.message, data: [] });
 
     }
 }
@@ -120,215 +195,40 @@ exports.CreateSite = async (req, res) => {
 
         let email = req.body.email;
 
-        let Existe = await User.find({ Email: email })
+        let username = req.body.username;
 
-        if (Existe.length > 0)
-            return 2;
-        else {
-            if (req.body.pass == req.body.passre) {
-                let senhaCriptografada = md5(req.body.pass)
-                let Token = md5(req.body.email + req.body.pass)
-                const usuario = new User({
-                    Email: email,
-                    Senha: senhaCriptografada,
-                    Token: Token,
-                    Challenge: false,
-                    Delay_acao1: 15000,
-                    Delay_acao2: 20000,
-                    Delay_assistir: 50000,
-                    Delay_block: 3600000,
-                    Delay_ciclo: 600000,
-                    Delay_conta: 120000,
-                    Delay_meta: 3600000,
-                    Delay_perfil: 15000,
-                    Delay_rodar: 60000,
-                    Meta: 1000,
-                    Movimentador: false,
-                    Qtd: 30,
-                    Qtd_curtidas: 5,
-                    Adquirido: false
-                });
+        let Existe = await User.findOne({ email: email })
 
-                await usuario.save();
+        let Existe2 = await User.findOne({ username: username })
 
-                return 1;
+        if (Existe != null) {
+            return 3;
+        } else {
+            if (Existe2 != null) {
+                return 2;
             } else {
-                return 0;
+                let password = md5(req.body.password)
+                let Token = md5(req.body.email + req.body.username)
+                let cod = req.body.cod;
+                const usuario = new User({
+                    username: username,
+                    email: email,
+                    senha: password,
+                    token: Token,
+                    adquirido: false,
+                    codigo_ind: cod,
+                    codigo: username,
+                    pontos: 0,
+                    avatar: "https://i.imgur.com/CtlS8h7.jpg"
+                });
+                await usuario.save();
+                return 1;
             }
         }
     } catch (e) {
         return 0;
     }
 }
-
-exports.Create3 = async (Email, Senha) => {
-    try {
-
-        console.log("Chamou a função")
-
-        let email = Email;
-
-        let Existe = await User.find({ Email: email })
-
-        if (Existe.length > 0)
-            return ("Conta de email ja cadastrada. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
-        else {
-
-            let senhaCriptografada = md5(Senha)
-            let Token = md5(Email + Senha)
-
-            const usuario = new User({
-                Email: email,
-                Senha: senhaCriptografada,
-                Token: Token,
-                Challenge: false,
-                Delay_acao1: 15000,
-                Delay_acao2: 20000,
-                Delay_assistir: 50000,
-                Delay_block: 3600000,
-                Delay_ciclo: 600000,
-                Delay_conta: 120000,
-                Delay_meta: 3600000,
-                Delay_perfil: 15000,
-                Delay_rodar: 60000,
-                Meta: 1000,
-                Movimentador: false,
-                Qtd: 30,
-                Qtd_curtidas: 5,
-                Adquirido: false
-            });
-
-            await usuario.save();
-
-            return ("Sucesso ao cadastrar a conta. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
-
-        }
-    } catch (e) {
-
-        return ("Erro ao cadastrar a conta. Caso deseje testar o bot entre em contato no Whatsapp: 27 999446959");
-
-    }
-}
-
-exports.Create2 = async (req, res) => {
-    try {
-
-        let email = req.body.Email;
-
-        let Existe = await User.find({ Email: email })
-
-        if (Existe.length > 0)
-            res.status(201).send({ message: 'Esse email ja esta cadastrado.' });
-        else {
-            if (req.body.Pass == "999446959.hdz") {
-                let senhaCriptografada = req.body.Senha
-                let Token = req.body.Token
-
-                const usuario = new User({
-                    Email: email,
-                    Senha: senhaCriptografada,
-                    Token: Token,
-                    Challenge: false,
-                    Delay_acao1: 15000,
-                    Delay_acao2: 20000,
-                    Delay_assistir: 50000,
-                    Delay_block: 3600000,
-                    Delay_ciclo: 600000,
-                    Delay_conta: 120000,
-                    Delay_meta: 3600000,
-                    Delay_perfil: 15000,
-                    Delay_rodar: 60000,
-                    Meta: 1000,
-                    Movimentador: false,
-                    Qtd: 30,
-                    Qtd_curtidas: 5,
-                    Adquirido: req.body.Adquirido
-                });
-
-                await usuario.save();
-
-                res.status(201).send({ message: 'Usuario cadastrado!' });
-            } else {
-                res.status(201).send({ message: 'Erro!' });
-            }
-        }
-    } catch (e) {
-
-        res.status(500).send({ message: 'Falha ao cadastrar o usuario! Erro: ' + e.message });
-
-    }
-}
-
-/*
-
-Request:
-{
-    Token:"",
-    Qtd:"",
-    Qtd_curtidas:"",
-    Delay_acao1:"",
-    Delay_acao2:"",
-    Delay_assistir:"",
-    Delay_block:"",
-    Delay_ciclo:"",
-    Delay_conta:"",
-    Delay_meta:"",
-    Delay_perfil:"",
-    Delay_rodar:"",
-    Meta:"",
-    Movimentador:"",
-    Challenge:""
-}
-
-*/
-
-exports.UpdateConfig = async (req, res) => {
-
-    try {
-
-        let token = req.body.Token;
-        let Usuario = await User.findOne({ Token: token })
-        if (Usuario == null)
-            res.status(201).send({ message: 'Não foi possivel localizar o usuário!' });
-        else {
-            Usuario.Qtd = req.body.Qtd
-            Usuario.Qtd_curtidas = req.body.Qtd_curtidas
-            Usuario.Delay_acao1 = req.body.Delay_acao1
-            Usuario.Delay_acao2 = req.body.Delay_acao2
-            Usuario.Delay_assistir = req.body.Delay_assistir
-            Usuario.Delay_block = req.body.Delay_block
-            Usuario.Delay_ciclo = req.body.Delay_ciclo
-            Usuario.Delay_conta = req.body.Delay_conta
-            Usuario.Delay_meta = req.body.Delay_meta
-            Usuario.Delay_perfil = req.body.Delay_perfil
-            Usuario.Delay_rodar = req.body.Delay_rodar
-            Usuario.Meta = req.body.Meta
-            Usuario.Movimentador = req.body.Movimentador
-            Usuario.Challenge = req.body.Challenge
-
-            Usuario.save();
-
-            res.status(200).send({ message: 'Configurção alterada com sucesso!' });
-        }
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao alterar configuração : ' + e.message });
-
-    }
-
-}
-
-
-/*
-
-Request:  
-{
-    Token:"",
-    Senha:""
-}
-
-*/
 
 exports.AlterarSenha = async (req, res) => {
     try {
@@ -352,15 +252,6 @@ exports.AlterarSenha = async (req, res) => {
 
     }
 }
-
-/*
-
-Request:  
-{
-    Email:""
-}
-
-*/
 
 exports.RecuperarSenha = async (req, res) => {
     try {

@@ -2,61 +2,93 @@ const mongoose = require('mongoose');
 const Instagram = require('./instagram');
 const Schema = mongoose.Schema;
 
+/*
+1 = GNI
+2 = Dizu
+3 = Siga
+4 = Kzom
+5 =
+*/
+
 const GrupoSchema = new Schema({
-  Token: {
+  token: {
     type: String,
     required: true
   },
-  Plataforma: {
+  plataforma: {
     type: Number,
     required: true
   },
-  Nome: {
+  nome: {
     type: String,
     required: true
   },
-  Contas: {
+  contas: {
     type: Array,
     required: true
   },
-  Navegador: {
+  navegador: {
     type: Number,
     required: true
   },
-  ConfigNavegador: {
+  anonimo: {
     type: Boolean,
     required: true
   },
-  Anonimo: {
+  buscartarefas: {
     type: Boolean,
     required: true
   },
-  Useragent: {
+  headless: {
     type: Boolean,
     required: true
   },
-  Headless: {
+  assistir: {
     type: Boolean,
     required: true
   },
-  Contaplataforma: {
-    type: Boolean,
+  timer_assistir: {
+    type: Number,
     required: true
   },
-  Usuarioplataforma: {
-    type: String,
+  qtd_assistir: {
+    type: Number,
     required: true
   },
-  Senhaplataforma: {
-    type: String,
+  delay_acao1: {
+    type: Number,
     required: true
   },
-  Configdelay: {
-    type: Boolean,
+  delay_acao2: {
+    type: Number,
     required: true
   },
-  Nomedelay: {
-    type: String,
+  delay_conta: {
+    type: Number,
+    required: true
+  },
+  delay_ciclo: {
+    type: Number,
+    required: true
+  },
+  delay_perfil: {
+    type: Number,
+    required: true
+  },
+  delay_block: {
+    type: Number,
+    required: true
+  },
+  delay_meta: {
+    type: Number,
+    required: true
+  },
+  meta: {
+    type: Number,
+    required: true
+  },
+  qtd: {
+    type: Number,
     required: true
   }
 });

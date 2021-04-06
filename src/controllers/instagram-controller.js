@@ -1,308 +1,142 @@
 const mongoose = require('mongoose');
 const Instagram = mongoose.model('Instagram');
 const User = mongoose.model('User');
+const fetch = require('node-fetch');
+const { remove } = require('../models/versao');
 
 // list
 
-exports.AddBlock = async (req, res) => {
-
+exports.getAccount = async (req, res, next) => {
     try {
-
-        let instagram = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta });
-
-        if (!instagram)
-            res.status(200).send({ message: 'Conta não localizada' });
-        else {
-            instagram.Block = true;
-            instagram.save();
-            res.status(200).send({ message: 'Foi adicionado Block na conta' });
-        }
-    } catch (e) {
-        res.status(500).send({ message: 'Erro ao adicionar block: ' + e.message });
-    }
-
-};
-
-exports.RemoverBlock = async (req, res) => {
-
-    try {
-
-        let instagram = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta });
-
-        if (!instagram)
-            res.status(200).send({ message: 'Conta não localizada' });
-        else {
-            instagram.Block = false;
-            instagram.save();
-            res.status(200).send({ message: 'Foi removido Block na conta' });
-        }
-    } catch (e) {
-        res.status(500).send({ message: 'Erro ao remover block: ' + e.message });
-    }
-
-};
-
-exports.AddChallenge = async (req, res) => {
-
-    try {
-
-        let instagram = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta });
-
-        if (!instagram)
-            res.status(200).send({ message: 'Conta não localizada' });
-        else {
-            instagram.Challenge = true;
-            instagram.save();
-            res.status(200).send({ message: 'Foi adicionado Challenge na conta' });
-        }
-    } catch (e) {
-        res.status(500).send({ message: 'Erro ao adicionar challenge: ' + e.message });
-    }
-
-};
-
-exports.RemoveChallenge = async (req, res) => {
-
-    try {
-
-        let instagram = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta });
-
-        if (!instagram)
-            res.status(200).send({ message: 'Conta não localizada' });
-        else {
-            instagram.Challenge = false;
-            instagram.save();
-            res.status(200).send({ message: 'Foi removido Challenge na conta' });
-        }
-    } catch (e) {
-        res.status(500).send({ message: 'Erro ao remover challenge: ' + e.message });
-    }
-
-};
-
-exports.Create = async (req, res) => {
-
-    try {
-
-        if (await User.findOne({ Token: req.body.Token }) == null)
-            res.status(201).send({ message: 'Usuário não encontrado.' })
-        else {
-
-            let existe = await Instagram.findOne({ Conta: req.body.Conta })
-
-            if (existe != null)
-                res.status(201).send({ message: 'Conta já cadastrada no sistema.' })
-            else {
-                let insta = new Instagram({
-                    Token: req.body.Token,
-                    Conta: req.body.Conta,
-                    Senha: req.body.Senha,
-                    Ganhar: req.body.Ganhar,
-                    Siga: req.body.Siga,
-                    Kzom: req.body.Kzom,
-                    Dizu: req.body.Dizu,
-                    Farma: req.body.Farma,
-                    Broad: req.body.Broad,
-                    Everve: req.body.Everve,
-                    Challenge: req.body.Challenge,
-                    Block: req.body.Block,
-                    Seguir: req.body.Seguir,
-                    Curtir: req.body.Curtir,
-                    Meta: req.body.Meta
-                })
-
-                insta.save();
-
-                res.status(201).send({ message: 'Conta cadastrada no sistema!' });
-
-            }
-
-        }
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao cadastrar conta: ' + e.message });
-
-    }
-
-};
-
-exports.Alterar = async (req, res) => {
-
-    try {
-
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.ContaAntiga })
-
-        if (!insta) {
-
-            res.status(201).send({ message: 'Conta do instagram não encontrada!' });
-
+        let json = req.body;
+        let instagram = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!instagram) {
+            res.status(200).send({ erro: 'Não foi localizada essa conta em nosso servidor.', data: [] });
         } else {
-            if (await Instagram.findOne({ Conta: req.body.Conta }) != null && req.body.ContaAntiga != req.body.Conta)
-                res.status(200).send({ message: 'Conta do instagram já cadastrada no sistema!' })
-            else {
-                insta.Token = req.body.Token
-                insta.Conta = req.body.Conta
-                insta.Senha = req.body.Senha
-                insta.Ganhar = req.body.Ganhar
-                insta.Siga = req.body.Siga
-                insta.Kzom = req.body.Kzom
-                insta.Dizu = req.body.Dizu
-                insta.Farma = req.body.Farma
-                insta.Broad = req.body.Broad
-                insta.Everve = req.body.Everve
-                insta.Challenge = req.body.Challenge
-                insta.Block = req.body.Block
-                insta.Seguir = req.body.Seguir
-                insta.Curtir = req.body.Curtir
-                insta.Meta = req.body.Meta
-
-                insta.save();
-
-                res.status(201).send({ message: 'Conta do Instagram alterada!' });
-            }
+            let ret = instagram.toJSON();
+            delete ret._id;
+            delete ret.__v;
+            res.status(200).send({ erro: '', data: [ret] });
         }
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao alterar conta: ' + e.message });
-
+    } catch {
+        res.status(500).send({ erro: 'Erro ao buscar a conta.', data: [] });
     }
+}
 
-};
-
-exports.Get = async (req, res) => {
-
+exports.getAllAccounts = async (req, res, next) => {
     try {
-
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
-        if (!insta)
-            res.status(200).send({ message: 'Essa conta não existe.' })
-        else {
-            var retorno = insta.toJSON();
-            delete retorno._id
-            delete retorno.__v
-            res.status(201).send(retorno);
-        }
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao buscar conta: ' + e.message });
-
-    }
-
-};
-
-exports.GetAll = async (req, res) => {
-
-    try {
-
-        let contas = await Instagram.find({ Token: req.body.Token })
-
-        if (!contas)
-            res.status(200).send({ message: 'Não existe contas cadastradas com esse Usuario.' })
-        else {
+        let json = req.body;
+        let list = await Instagram.find({ token: json.token });
+        if (list.length > 0) {
             var aux;
-            let list = new Array();
-            for (let i = 0; i < contas.length; i++) {
-                aux = contas[i].toJSON();
+            let lista = new Array();
+            for (let i = 0; i < list.length; i++) {
+                aux = list[i].toJSON();
                 delete aux._id;
                 delete aux.__v;
-                list.push(aux);
+                lista.push(aux);
             }
-            res.status(200).send(list);
+            res.status(200).send({ erro: '', data: lista });
+        } else {
+            res.status(200).send({ erro: "Ainda não possui contas cadastrada.", data: [] })
         }
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao buscar contas: ' + e.message });
-
+    } catch {
+        res.status(500).send({ erro: "Não foi possivel localizar as suas contas.", data: [] });
     }
+}
 
-};
-
-exports.Delete = async (req, res) => {
-
+exports.accountAddBlock = async (req, res, next) => {
     try {
-
-        await Instagram.findOneAndDelete({ Token: req.body.Token, Conta: req.body.Conta })
-
-        res.status(200).send({ message: 'Conta deletada' });
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao deletar conta: ' + e.message });
-
-    }
-
-};
-
-exports.AddSeguir = async (req, res) => {
-
-    try {
-
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
-
-        if (!insta)
-            res.status(201).send({ message: 'Conta não cadastrada.' })
-        else {
-
-            insta.Seguir += 1;
-            insta.save();
-            res.status(201).send({ message: 'Adicionado com sucesso: ' + insta.Seguir })
-
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.block = true;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
         }
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao adicionar Seguir na conta: ' + e.message });
-
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
     }
+}
 
-};
-
-exports.AddCurtir = async (req, res) => {
-
+exports.accountRemoveBlock = async (req, res, next) => {
     try {
-
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
-
-        if (!insta)
-            res.status(201).send({ message: 'Conta não cadastrada.' })
-        else {
-
-            insta.Curtir += 1;
-            insta.save();
-            res.status(201).send({ message: 'Adicionado com sucesso: ' + insta.Curtir })
-
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.block = false;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
         }
-
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao adicionar Curtir na conta: ' + e.message });
-
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
     }
+}
 
-};
-
-exports.Resetar = async (req, res) => {
-
+exports.accountAddChallenge = async (req, res, next) => {
     try {
-
-        let insta = await Instagram.findOne({ Token: req.body.Token, Conta: req.body.Conta })
-
-        if (!insta)
-            res.status(201).send({ message: 'Conta não encontrada.' })
-        else {
-
-            insta.Seguir = 0
-            insta.Curtir = 0
-            res.status(201).send({ message: 'Conta resetada.' })
-            insta.save()
-
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.challenge = true;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
         }
-    } catch (e) {
-
-        res.status(500).send({ message: 'Erro ao resetar a conta: ' + e.message });
-
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
     }
+}
 
+exports.accountRemoveChallenge = async (req, res, next) => {
+    try {
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.challenge = false;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
+        }
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
+    }
+}
+
+exports.accountAddCurtir = async (req, res, next) => {
+    try {
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.curtir += 1;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
+        }
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
+    }
+}
+
+exports.accountAddSeguir = async (req, res, next) => {
+    try {
+        let json = req.body;
+        let insta = await Instagram.findOne({ token: json.token, username: json.username });
+        if (!insta) {
+            res.status(500).send({ erro: 'Não foi possivel localizar essa conta.', data: [] });
+        } else {
+            insta.seguir += 1;
+            await insta.save();
+            res.status(200).send({erro: 'success', data:[]});
+        }
+    } catch {
+        res.status(500).send({ erro: 'Não foi possivel realizar a tarefa', data: [] });
+    }
 }

@@ -223,7 +223,6 @@ exports.confirmarTask = async (req, res) => {
             })
                 .then(res => res.json())
                 .then(json => json);
-            console.log(response);
             if (response.status == "success") {
                 if (response.message == "PULOU_SUCESSO") {
                     res.status(200).send({ Status: 1, message: "Tarefa pulada." });

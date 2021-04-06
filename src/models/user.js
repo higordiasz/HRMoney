@@ -2,76 +2,40 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  Email: {
+  username: {
     type: String,
     required: true
   },
-  Senha: {
+  email: {
     type: String,
     required: true
   },
-  Token: {
+  senha: {
     type: String,
     required: true
   },
-  Adquirido: {
+  token: {
+    type: String,
+    required: true
+  },
+  adquirido: {
     type: Boolean,
     required: true
   },
-  Challenge: {
-    type: Boolean,
+  codigo_ind: {
+    type: String,
     required: true
   },
-  Movimentador: {
-    type: Boolean,
+  codigo: {
+    type: String,
     required: true
   },
-  Qtd_curtidas: {
+  pontos: {
     type: Number,
     required: true
   },
-  Delay_rodar: {
-    type: Number,
-    required: true
-  },
-  Delay_assistir: {
-    type: Number,
-    required: true
-  },
-  Delay_acao1: {
-    type: Number,
-    required: true
-  },
-  Delay_acao2: {
-    type: Number,
-    required: true
-  },
-  Delay_conta: {
-    type: Number,
-    required: true
-  },
-  Delay_ciclo: {
-    type: Number,
-    required: true
-  },
-  Delay_perfil: {
-    type: Number,
-    required: true
-  },
-  Delay_block: {
-    type: Number,
-    required: true
-  },
-  Delay_meta: {
-    type: Number,
-    required: true
-  },
-  Meta: {
-    type: Number,
-    required: true
-  },
-  Qtd: {
-    type: Number,
+  avatar: {
+    type: String,
     required: true
   }
 });

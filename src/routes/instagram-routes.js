@@ -2,28 +2,20 @@ const express = require('express');
 const router = express.Router();
 const instaController = require('../controllers/instagram-controller');
 
-router.post('/create/', instaController.Create);
+router.post('/get/', instaController.getAccount);
 
-router.post('/get/', instaController.Get);
+router.post('/getall/', instaController.getAllAccounts);
 
-router.post('/getall/', instaController.GetAll);
+router.post('/addblock/', instaController.accountAddBlock);
 
-router.post('/delete/', instaController.Delete);
+router.post('/addchallenge/', instaController.accountAddChallenge);
 
-router.post('/addblock/', instaController.AddBlock);
+router.post('/removeblock/', instaController.accountRemoveBlock);
 
-router.post('/addchallenge/', instaController.AddChallenge);
+router.post('/removechallenge/', instaController.accountRemoveChallenge);
 
-router.post('/removeblock/', instaController.RemoverBlock);
+router.post('/addseguir/', instaController.accountAddSeguir);
 
-router.post('/removechallenge/', instaController.RemoveChallenge);
-
-router.post('/alterar/', instaController.Alterar);
-
-router.post('/addseguir/', instaController.AddSeguir);
-
-router.post('/addcurtir/', instaController.AddCurtir);
-
-router.post('/resetar/', instaController.Resetar);
+router.post('/addcurtir/', instaController.accountAddCurtir);
 
 module.exports = router;

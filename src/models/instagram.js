@@ -2,64 +2,36 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const InstagramSchema = new Schema({
-  Token: {
+  token: {
     type: String,
     required: true
   },
-  Conta: {
+  username: {
     type: String,
     required: true
   },
-  Senha: {
+  password: {
     type: String,
     required: true
   },
-  Ganhar: {
+  challenge: {
     type: Boolean,
     required: true
   },
-  Siga: {
+  block: {
     type: Boolean,
     required: true
   },
-  Kzom: {
-    type: Boolean,
-    required: true
-  },
-  Dizu: {
-    type: Boolean,
-    required: true
-  },
-  Farma: {
-    type: Boolean,
-    required: true
-  },
-  Broad: {
-    type: Boolean,
-    required: true
-  },
-  Everve: {
-    type: Boolean,
-    required: true
-  },
-  Challenge: {
-    type: Boolean,
-    required: true
-  },
-  Block: {
-    type: Boolean,
-    required: true
-  },
-  Seguir: {
+  seguir: {
     type: Number,
     required: true
   },
-  Curtir: {
+  curtir: {
     type: Number,
     required: true
   },
-  Meta: {
-    type: Number,
+  avatar: {
+    type: String,
     required: true
   }
 });

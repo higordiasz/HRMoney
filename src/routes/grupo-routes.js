@@ -2,14 +2,12 @@ const express = require('express');
 const router = express.Router();
 const grupoController = require('../controllers/grupo-controller');
 
-router.post('/get/', grupoController.Get);
+router.post('/get/instagram', grupoController.getGroupInsta);
 
-router.post('/getall/', grupoController.GetAll);
+router.post('/getall/instagram', grupoController.getAllGroupInsta);
 
-router.post('/create/', grupoController.Create);
+router.post('/get/movimentador', grupoController.getGroupMovi);
 
-router.post('/delete/', grupoController.Deletar);
-
-router.post('/alterar/', grupoController.Alterar);
+router.post('/getall/movimentador', grupoController.getAllGroupMovi);
 
 module.exports = router;

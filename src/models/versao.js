@@ -33,6 +33,14 @@ const schema = new Schema({
   HREverve: {
     type: String,
     required: true
+  },
+  Movimentador: {
+    type: String,
+    required: true
+  },
+  TikTok: {
+    type: String,
+    required: true
   }
 });
 
