@@ -6,6 +6,7 @@ const Grupo = mongoose.model('Grupo');
 const License = mongoose.model('License');
 const History = mongoose.model('History');
 const Movimentador = mongoose.model('Movimentador');
+const Cupom = mongoose.model('Cupom');
 const moment = require('moment');
 const md5 = require('md5');
 const nodemailer = require('nodemailer');
@@ -28,6 +29,30 @@ exports.getLink = async (req, res) => {
         res.status(500).send({ message: 'Erro ao carregar o Link: ' + e.message });
     }
 };
+
+exports.addCupom = async (req, res, next) => {
+    try {
+        let user = req.body.user
+        let pass = req.body.pass
+        let l = req.body.l
+        let u = req.body.u
+        if (user != "higordiaszhrmoney.com.br" || pass != "hrmonet.com.br/cupom2021-2023/key" || l != "lforcupomcreator20294$%#%" || u != "sfogj40540(*&#(ifhg)*(fhri") {
+            res.status(500).send({ message: 'Erro ao cadastrar o cupom.'});
+        } else {
+            let cupom = new Cupom();
+            cupom.cupom = req.body.cupom
+            cupom.quantidade = req.body.quantidade
+            cupom.atual = 0
+            cupom.usuarios = []
+            cupom.sistema = req.body.sistema
+            cupom.value = req.body.value
+            await cupom.save();
+            res.status(200).send({ message: 'Cupom cadastrado com sucesso.'});
+        }
+    } catch (e) {
+        res.status(500).send({ message: 'Erro ao cadastrar o cupom: ' + e.message });
+    }
+}
 
 exports.alterInsta = async (req, res, next) => {
     try {
@@ -54,7 +79,7 @@ exports.alterInsta = async (req, res, next) => {
                             g.save();
                         })
                     }
-                    let movi = await Movimentador.find({contas: req.body._username});
+                    let movi = await Movimentador.find({ contas: req.body._username });
                     if (movi.length > 0) {
                         movi.forEach(g => {
                             for (var i = 0; i < g.contas.length; i++) {
@@ -85,7 +110,7 @@ exports.alterInsta = async (req, res, next) => {
                             g.save();
                         })
                     }
-                    let movi = await Movimentador.find({contas: req.body._username});
+                    let movi = await Movimentador.find({ contas: req.body._username });
                     if (movi.length > 0) {
                         movi.forEach(g => {
                             for (var i = 0; i < g.contas.length; i++) {
@@ -182,6 +207,23 @@ exports.deleteGrupoInsta = async (req, res, next) => {
         }
     } catch {
         res.redirect('../instagram');
+    }
+}
+
+exports.deleteGrupoMovi = async (req, res, next) => {
+    try {
+        if (req.user.token != req.query.token) {
+            res.redirect('../movimentador');
+        } else {
+            if (await Movimentador.findOne({ token: req.query.token, nome: req.query.nome }) != null) {
+                await Movimentador.deleteOne({ token: req.query.token, nome: req.query.nome });
+                res.redirect('../movimentador');
+            } else {
+                res.redirect('../movimentador');
+            }
+        }
+    } catch {
+        res.redirect('../movimentador');
     }
 }
 
@@ -1813,38 +1855,38 @@ exports.creatNewMovi = async (req, res, next) => {
         if (!exist) {
             if (json.selecionadas == null) {
                 let contas = await Instagram.find({ token: req.user.token });
-            res.render('movinew', {
-                user: req.user,
-                contas: contas,
-                erro_contas: "<p style=\"color:red\">Selecione ao menos 1 conta!</p>",
-                erro_timer: "",
-                erro_story: "",
-                erro_nav: "",
-                erro_nome: ""
-            })
+                res.render('movinew', {
+                    user: req.user,
+                    contas: contas,
+                    erro_contas: "<p style=\"color:red\">Selecione ao menos 1 conta!</p>",
+                    erro_timer: "",
+                    erro_story: "",
+                    erro_nav: "",
+                    erro_nome: ""
+                })
             } else {
-            let novo = new Movimentador({
-                token: user.token,
-                nome: json.nome,
-                contas: json.selecionadas,
-                feed: json.feed != null ? true : false,
-                timer_feed: json.tempo_feed != "" ? json.tempo_feed : 30,
-                assistir: json.assistir != null ? true : false,
-                timer_assistir: json.tempo_assistir != "" ? json.tempo_assistir : 30,
-                curtir: json.curtir != null ? true : false,
-                qtd_curtir: json.qtd_curtir != "" ? json.qtd_curtir : 30,
-                comentar: json.comentar != null ? true : false,
-                qtd_comentar: json.qtd_comentar != "" ? json.qtd_comentar : 30,
-                repetir: json.repetir != "" ? json.repetir : 1,
-                navegador: json.navegador,
-                anonimo: json.anonimo != null ? true : false,
-                headless: json.headles != null ? true : false,
-                seguir: json.seguir != null ? true : false,
-                publicar_feed: json.publicar_feed != null ? true : false,
-                publicar_story: json.publicar_story != null ? true : false
-            });
-            await novo.save();
-            res.redirect("../movimentador");
+                let novo = new Movimentador({
+                    token: user.token,
+                    nome: json.nome,
+                    contas: json.selecionadas,
+                    feed: json.feed != null ? true : false,
+                    timer_feed: json.tempo_feed != "" ? json.tempo_feed : 30,
+                    assistir: json.assistir != null ? true : false,
+                    timer_assistir: json.tempo_assistir != "" ? json.tempo_assistir : 30,
+                    curtir: json.curtir != null ? true : false,
+                    qtd_curtir: json.qtd_curtir != "" ? json.qtd_curtir : 30,
+                    comentar: json.comentar != null ? true : false,
+                    qtd_comentar: json.qtd_comentar != "" ? json.qtd_comentar : 30,
+                    repetir: json.repetir != "" && json.repetir > 0 ? json.repetir : 1,
+                    navegador: json.navegador,
+                    anonimo: json.anonimo != null ? true : false,
+                    headless: json.headles != null ? true : false,
+                    seguir: json.seguir != null ? true : false,
+                    publicar_feed: json.publicar_feed != null ? true : false,
+                    publicar_story: json.publicar_story != null ? true : false
+                });
+                await novo.save();
+                res.redirect("../movimentador");
             }
         } else {
             let contas = await Instagram.find({ token: req.user.token });
@@ -1870,5 +1912,57 @@ exports.creatNewMovi = async (req, res, next) => {
             erro_nav: "",
             erro_nome: "<p style=\"color:red\">Erro ao cadastrar o grupo!</p>"
         })
+    }
+}
+
+exports.alterGroupMovi = async (req, res, next) => {
+    try {
+        if (req.user.token == req.query.token && req.query.nome != "") {
+            let contas = await Instagram.find({ token: req.user.token });
+            let grupo = await Movimentador.findOne({ nome: req.query.nome, token: req.user.token });
+            res.render('altergroupmovi', {
+                user: req.user,
+                contas: contas,
+                grupo: grupo,
+                erro_contas: "",
+                erro_timer: "",
+                erro_story: "",
+                erro_nav: "",
+                erro_nome: ""
+            })
+        } else {
+            res.redirect("../movimentador");
+        }
+    } catch {
+        res.redirect("../movimentador");
+    }
+};
+
+exports.alterGroupMoviPost = async (req, res, next) => {
+    try {
+        let json = req.body;
+        let user = req.user;
+        let g = await Movimentador.findOne({ nome: json.nome, token: user.token });
+        g.contas = json.selecionadas
+        g.feed = json.feed != null ? true : false
+        g.timer_feed = json.tempo_feed != "" ? json.tempo_feed : 30
+        g.assistir = json.assistir != null ? true : false
+        g.timer_assistir = json.tempo_assistir != "" ? json.tempo_assistir : 30
+        g.curtir = json.curtir != null ? true : false
+        g.qtd_curtir = json.qtd_curtir != "" ? json.qtd_curtir : 30
+        g.comentar = json.comentar != null ? true : false
+        g.qtd_comentar = json.qtd_comentar != "" ? json.qtd_comentar : 30
+        g.repetir = json.repetir != "" && json.repetir > 0 ? json.repetir : 1
+        g.navegador = json.navegador
+        g.anonimo = json.anonimo != null ? true : false
+        g.headless = json.headles != null ? true : false
+        g.seguir = json.seguir != null ? true : false
+        g.publicar_feed = json.publicar_feed != null ? true : false
+        g.publicar_story = json.publicar_story != null ? true : false
+        await g.save();
+        res.redirect("../movimentador");
+    } catch (e) {
+        console.log(e)
+        res.redirect("../movimentador");
     }
 }

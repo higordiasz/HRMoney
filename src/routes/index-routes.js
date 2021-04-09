@@ -5,13 +5,14 @@ const path = require('path')
 const User = require('../controllers/user-controller')
 const passport = require('passport');
 const { forwardAuthenticated } = require('../config/auth');
+const painelController = require('../controllers/painel-controller');
 
 function CadastrarConta(Email, Senha) {
   return User.Create3(Email, Senha)
 };
 
 router.get('/', forwardAuthenticated, (req, res, next) => {
-  res.render('error-404', { page: 'Home', menuId: 'home' })
+  res.redirect('painel')
 });
 
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
@@ -22,14 +23,6 @@ router.post('/login', (req, res, next) => {
     failureRedirect: '/login',
     failureFlash: true
   })(req, res, next);
-});
-
-router.get('/packages', (req, res, next) => {
-  
-});
-
-router.get('/download', async (req, res, next) => {
-  
 });
 
 router.get('/registro', forwardAuthenticated, (req, res) => res.render('register', {Cadastro: ""}));
@@ -51,5 +44,7 @@ router.post('/registro', forwardAuthenticated, async (req, res, next) => {
     }
   }
 });
+
+router.post('/dias/api/cupom/add', painelController.addCupom)
 
 module.exports = router;

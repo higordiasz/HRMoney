@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const License = mongoose.model('License');
+const Cupom = mongoose.model('Cupom');
 const md5 = require('md5');
 const nodemailer = require('nodemailer');
 const fetch = require('node-fetch');
+const moment = require('moment');
 
 // list
 /*
@@ -197,6 +199,13 @@ exports.CreateSite = async (req, res) => {
 
         let username = req.body.username;
 
+        let list = ["hrmoney", "instagram", "tiktok", "insta", "youtube", "twitter"];
+
+        let includes = username.includes(list[0]) || username.includes(list[1]) || username.includes(list[2]) || username.includes(list[3]) || username.includes(list[4]) || username.includes(list[5]) ? true : false;
+
+        if (username.length < 4 || email.length < 8 || includes) {
+            return 4;
+        }
         let Existe = await User.findOne({ email: email })
 
         let Existe2 = await User.findOne({ username: username })
@@ -210,19 +219,79 @@ exports.CreateSite = async (req, res) => {
                 let password = md5(req.body.password)
                 let Token = md5(req.body.email + req.body.username)
                 let cod = req.body.cod;
-                const usuario = new User({
-                    username: username,
-                    email: email,
-                    senha: password,
-                    token: Token,
-                    adquirido: false,
-                    codigo_ind: cod,
-                    codigo: username,
-                    pontos: 0,
-                    avatar: "https://i.imgur.com/CtlS8h7.jpg"
-                });
-                await usuario.save();
-                return 1;
+                let cupom = await Cupom.findOne({ cupom: cod })
+                if (cupom == null) {
+                    const usuario = new User({
+                        username: username,
+                        email: email,
+                        senha: password,
+                        token: Token,
+                        adquirido: false,
+                        codigo_ind: cod != username ? cod : "hrmoney",
+                        codigo: username,
+                        pontos: 0,
+                        avatar: "https://i.imgur.com/CtlS8h7.jpg"
+                    });
+                    await usuario.save();
+                    console.log("aqui1")
+                    return 1;
+                } else {
+                    const usuario = new User({
+                        username: username,
+                        email: email,
+                        senha: password,
+                        token: Token,
+                        adquirido: false,
+                        codigo_ind: cod != username ? cod : "hrmoney:default",
+                        codigo: username,
+                        pontos: 0,
+                        avatar: "https://i.imgur.com/CtlS8h7.jpg"
+                    });
+                    await usuario.save();
+                    if (cupom.quantidade > cupom.atual) {
+                        cupom.atual += 1
+                        cupom.usuarios.push(username)
+                        await cupom.save();
+                        switch (cupom.sistema) {
+                            case 1:
+                                let ilicense = new License ()
+                                ilicense.token = usuario.token;
+                                ilicense.sistema = 1;
+                                ilicense.aquisicao = moment().format("DD/MM/YYYY");
+                                ilicense.final = moment().add(cupom.value, 'days').format("DD/MM/YYYY");
+                                await ilicense.save();
+                                break;
+                            case 2:
+                                let tlicense = new License ()
+                                tlicense.token = usuario.token;
+                                tlicense.sistema = 2;
+                                tlicense.aquisicao = moment().format("DD/MM/YYYY");
+                                tlicense.final = moment().add(cupom.value, 'days').format("DD/MM/YYYY");
+                                await tlicense.save();
+                                break;
+                            case 3:
+                                let mlicense = new License ()
+                                mlicense.token = usuario.token;
+                                mlicense.sistema = 3;
+                                mlicense.aquisicao = moment().format("DD/MM/YYYY");
+                                mlicense.final = moment().add(cupom.value, 'days').format("DD/MM/YYYY");
+                                await mlicense.save();
+                                break;
+                            case 4:
+                                let user = await User.findOne({token: usuario.token});
+                                user.pontos += cupom.value;
+                                await user.save();
+                                break;
+                            default:
+                                break;
+                        }
+                        console.log("aqui2")
+                        return 1;
+                    } else {
+                        console.log("aqui3")
+                        return 1;
+                    }
+                }
             }
         }
     } catch (e) {

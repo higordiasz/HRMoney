@@ -70,11 +70,17 @@ router.get('/instagram/new', ensureAuthenticated, painelController.loadNewGroup)
 
 router.get('/instagram/edit', ensureAuthenticated, painelController.alterGroupInsta);
 
+router.get('/movimentador/delete', ensureAuthenticated, painelController.deleteGrupoMovi);
+
+router.get('/movimentador/edit', ensureAuthenticated, painelController.alterGroupMovi);
+
 // POST area
 
 router.post('/movimentador/new', ensureAuthenticated, painelController.creatNewMovi);
 
 router.post('/instagram/edit', ensureAuthenticated, painelController.alterGroupPost);
+
+router.post('/movimentador/edit', ensureAuthenticated, painelController.alterGroupMoviPost);
 
 router.post('/cadinsta/new/', ensureAuthenticated, painelController.insertInsta);
 

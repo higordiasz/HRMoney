@@ -18,6 +18,7 @@ const Session = require('./models/sessiongni');
 const License = require('./models/license');
 const History = require('./models/history');
 const Movimentador = require('./models/movimentador');
+const Cupom = require('./models/cupom');
 
 const app = express();
 const passport = require('passport');

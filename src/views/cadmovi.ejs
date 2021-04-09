@@ -383,13 +383,13 @@
                                 <tr>
                                     <td> <%- grupos[i].nome %> </td>
                                     <td> <%- grupos[i].contas.length %> </td>
-                                    <td> <%- grupos[i].feed %> </td>
-                                    <td> <%- grupos[i].assistir %> </td>
-                                    <td> <%- grupos[i].curtir %> </td>
-                                    <td> <%- grupos[i].comentar %> </td>
-                                    <td> <%- grupos[i].seguir %> </td>
-                                    <td> <%- grupos[i].publicar_feed %> </td>
-                                    <td> <%- grupos[i].publicar_story %> </td>
+                                    <td> <%- grupos[i].feed ? "Sim" : "Não"%> </td>
+                                    <td> <%- grupos[i].assistir ? "Sim" : "Não" %> </td>
+                                    <td> <%- grupos[i].curtir ? "Sim" : "Não" %> </td>
+                                    <td> <%- grupos[i].comentar ? "Sim" : "Não" %> </td>
+                                    <td> <%- grupos[i].seguir ? "Sim" : "Não" %> </td>
+                                    <td> <%- grupos[i].publicar_feed ? "Sim" : "Não" %> </td>
+                                    <td> <%- grupos[i].publicar_story ? "Sim" : "Não" %> </td>
                                     <td>
                                         <button type="button"  onclick="Edit(this)" class="btn btn-primary btn-sm btn-edit-conta" data-token=<%- grupos[i].token%> data-nome=<%- grupos[i].nome%>>
                                             <i class="mdi mdi-table-edit"></i>
