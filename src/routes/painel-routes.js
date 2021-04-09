@@ -50,6 +50,10 @@ router.get('/painel/', ensureAuthenticated, painelController.loadPanel);
 
 router.get('/cadinsta/', ensureAuthenticated, painelController.loadCadInsta);
 
+router.get('/download/', ensureAuthenticated, (req, res, next) => {
+  res.render('download', { user: req.user });
+})
+
 router.get('/cadinsta/new/', ensureAuthenticated, (req, res, next) => {
   res.render('newinsta', { user: req.user, erro: "" })
 });

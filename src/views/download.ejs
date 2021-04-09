@@ -3,6 +3,7 @@
 
 <head>
   <!-- Required meta tags -->
+  <!--data-type="3" data-plat="5" onclick="Comprar(this)"-->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Painel HRMoney</title>
@@ -149,29 +150,29 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="../download">
-              <span class="menu-icon">
-                  <i class="mdi mdi-download"></i>
-              </span>
-              <span class="menu-title">Download</span>
-          </a>
-      </li>
-      <li class="nav-item menu-items">
-          <a class="nav-link" href="../rlicense">
-              <span class="menu-icon">
-                  <i class="mdi mdi-certificate"></i>
-              </span>
-              <span class="menu-title">Resgatar Licenças</span>
-          </a>
-      </li>
-      <li class="nav-item menu-items">
-          <a class="nav-link" href="../rinstagram">
-              <span class="menu-icon">
-                  <i class="mdi mdi-account-multiple"></i>
-              </span>
-              <span class="menu-title">Resgatar Contas</span>
-          </a>
-      </li>
+            <a class="nav-link" href="../download">
+                <span class="menu-icon">
+                    <i class="mdi mdi-download"></i>
+                </span>
+                <span class="menu-title">Download</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="../rlicense">
+                <span class="menu-icon">
+                    <i class="mdi mdi-certificate"></i>
+                </span>
+                <span class="menu-title">Resgatar Licenças</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="../rinstagram">
+                <span class="menu-icon">
+                    <i class="mdi mdi-account-multiple"></i>
+                </span>
+                <span class="menu-title">Resgatar Contas</span>
+            </a>
+        </li>
       </ul>
     </nav>
     <!-- partial -->
@@ -365,174 +366,144 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-xl-6 col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-9">
-                      <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">
-                          <%- user.pontos%>
-                        </h3>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Bots Instagram</h4>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                      <div class="text-md-center text-xl-left">
+                        <h6 class="mb-1">Download Bot</h6>
+                        <p class="text-muted mb-0">Download pelo Mega</p>
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        <a type="button" class="btn-icon tam" data-type="1" data-plat="1" href="https://mega.nz/file/nNME0ZoJ#gXgYdiuya4jQAcuO6t_uUmQ2kVopC3xMJJUhj8hjViE" >
+                            <i class="mdi mdi-download center"></i>
+                        </a>
                       </div>
                     </div>
-                  </div>
-                  <h6 class="text-muted font-weight-normal">Quantidade de Pontos</h6>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-6 col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-9">
-                      <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">R$ <%- valor %>
-                        </h3>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                    </div>
-                  </div>
-                  <h6 class="text-muted font-weight-normal">Valor em Reais</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-row justify-content-between">
-                    <h4 class="card-title mb-1">Licenças Adquiridas</h4>
-                    <p class="text-muted mb-1">Data de aquisição / final</p>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="preview-list">
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-primary">
-                              <i class="mdi mdi-instagram"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-sm-flex flex-grow">
-                            <div class="flex-grow">
-                              <h6 class="preview-subject">Automação Instagram</h6>
-                              <p class="text-muted mb-0">Bot para as plataformas.</p>
-                            </div>
-                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                              <p class="text-muted">
-                                <% if(instagram !=null) {%>
-                                  <%- instagram.aquisicao %>
-                                    <% } else { %>
-                                      --/--/--
-                                      <%}%>
-                              </p>
-                              <p class="text-muted mb-0">
-                                <% if(instagram !=null) {%>
-                                  <%- instagram.final %>
-                                    <% } else { %>
-                                      Não Adquirido
-                                      <%}%>
-                              </p>
-                            </div>
-                          </div>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo Google Drive</p>
                         </div>
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark">
-                              <i class="mdi mdi-music-note"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-sm-flex flex-grow">
-                            <div class="flex-grow">
-                              <h6 class="preview-subject">Automação TikTok</h6>
-                              <p class="text-muted mb-0">Bot para as plataformas.</p>
-                            </div>
-                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                              <p class="text-muted">
-                                <% if(tiktok !=null) {%>
-                                  <%- tiktok.aquisicao %>
-                                    <% } else { %>
-                                      --/--/--
-                                      <%}%>
-                              </p>
-                              <p class="text-muted mb-0">
-                                <% if(tiktok !=null) {%>
-                                  <%- tiktok.final %>
-                                    <% } else { %>
-                                      Não Adquirido
-                                      <%}%>
-                              </p>
-                            </div>
-                          </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
                         </div>
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-danger">
-                              <i class="mdi mdi-speedometer"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-sm-flex flex-grow">
-                            <div class="flex-grow">
-                              <h6 class="preview-subject">Movimentador Instagram</h6>
-                              <p class="text-muted mb-0">Movimentador e demais funções para Instagram.</p>
-                            </div>
-                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                              <p class="text-muted">
-                                <% if(movimentador !=null) {%>
-                                  <%- movimentador.aquisicao %>
-                                    <% } else { %>
-                                      --/--/--
-                                      <%}%>
-                              </p>
-                              <p class="text-muted mb-0">
-                                <% if(movimentador !=null) {%>
-                                  <%- movimentador.final %>
-                                    <% } else { %>
-                                      Não Adquirido
-                                      <%}%>
-                              </p>
-                            </div>
-                          </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="2" data-plat="1" href="https://drive.google.com/file/d/1rmA7mBe_fgh6log_AQNlRNChSlB6ixA3/view?usp=sharing" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
                         </div>
                       </div>
+                      <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo MediaFire</p>
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="3" data-plat="1" href="https://www.mediafire.com/file/125im32neallopz/HRSites.rar/file" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Bot TikTok</h4>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                      <div class="text-md-center text-xl-left">
+                        <h6 class="mb-1">Download Bot</h6>
+                        <p class="text-muted mb-0">Download pelo Mega</p>
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        <a type="button" class="btn-icon tam" data-type="1" data-plat="2" href="https://mega.nz/file/XcUyhDIZ#3zZ6JKQQbiuKtTmZIO6dWwhr-Vx8xeEElbCvOJC19bE" >
+                            <i class="mdi mdi-download center"></i>
+                        </a>
+                      </div>
                     </div>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo Google Drive</p>
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="2" data-plat="2" href="https://drive.google.com/file/d/1wLfgjK1kPwqojUMx-hsODoc4dDnqzsRR/view?usp=sharing" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
+                        </div>
+                      </div>
+                      <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo MediaFire</p>
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="3" data-plat="2" href="https://www.mediafire.com/file/yb6li00c0w6b7yo/HRTiktok.rar/file" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="row ">
-            <div class="col-6 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Indicados</h4>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th> Usuario </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% for(var i=0; i < indicados.length; i++) { %>
-                          <tr>
-                            <td>
-                              <img src=<%- indicados[i].avatar %> alt="image" />
-                              <span class="pl-2">
-                                <%- indicados[i].username %>
-                              </span>
-                            </td>
-                          </tr>
-                          <% } %>
-                      </tbody>
-                    </table>
+              <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Bot Movimentador</h4>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                      <div class="text-md-center text-xl-left">
+                        <h6 class="mb-1">Download Bot</h6>
+                        <p class="text-muted mb-0">Download pelo Mega</p>
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        <a type="button" class="btn-icon tam" data-type="1" data-plat="3" href="https://mega.nz/file/WYFQgJxY#gyX7O4jre6PouA8FOReBsWmi-Uo4GlXqiISycD5KB9U" >
+                            <i class="mdi mdi-download center"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo Google Drive</p>
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="2" data-plat="3" href="https://drive.google.com/file/d/1rhwNt1HWQ6pCumJzQcIXsjAP6xySbXVL/view?usp=sharing" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
+                        </div>
+                      </div>
+                      <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                        <div class="text-md-center text-xl-left">
+                          <h6 class="mb-1">Download Bot</h6>
+                          <p class="text-muted mb-0">Download pelo MediaFire</p>
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        </div>
+                        <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <a type="button" class="btn-icon tam" data-type="3" data-plat="3" href="https://www.mediafire.com/file/gj1zjtzmzttbmel/HRMovimentador.rar/file" >
+                                <i class="mdi mdi-download center"></i>
+                            </a>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
