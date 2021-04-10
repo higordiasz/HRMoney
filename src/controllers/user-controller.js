@@ -163,7 +163,7 @@ exports.Create = async (req, res) => {
 
                 const usuario = new User({
                     username: req.body.username,
-                    codigo_ind: req.body.codigo_ind,
+                    codigo_ind: req.body.codigo_ind != null && req.body.codigo_ind != "" ? req.body.codigo_ind : "hrmoney",
                     codigo: req.body.username,
                     avatar: "",
                     email: email,
