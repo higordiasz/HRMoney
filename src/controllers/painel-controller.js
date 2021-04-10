@@ -563,16 +563,31 @@ exports.adquirirLicense = async (req, res, next) => {
                             user.pontos -= 500;
                             license = 1;
                             await user.save();
+                            let indicador = await User.findOne({ username: user.codigo_ind })
+                            if (indicador != null) {
+                                indicador.pontos += 50;
+                                await indicador.save()
+                            }
                         } else {
                             if (json.type == "2" && user.pontos >= 850) {
                                 user.pontos -= 850;
                                 license = 2;
                                 await user.save();
+                                let indicador = await User.findOne({ username: user.codigo_ind })
+                                if (indicador != null) {
+                                    indicador.pontos += 85;
+                                    await indicador.save()
+                                }
                             } else {
                                 if (json.type == "3" && user.pontos >= 1500) {
                                     user.pontos -= 1500;
                                     license = 3;
                                     await user.save();
+                                    let indicador = await User.findOne({ username: user.codigo_ind })
+                                    if (indicador != null) {
+                                        indicador.pontos += 150;
+                                        await indicador.save()
+                                    }
                                 } else {
                                     res.redirect("../painel");
                                 }
@@ -584,16 +599,31 @@ exports.adquirirLicense = async (req, res, next) => {
                             user.pontos -= 700;
                             license = 4;
                             await user.save();
+                            let indicador = await User.findOne({ username: user.codigo_ind })
+                            if (indicador != null) {
+                                indicador.pontos += 70;
+                                await indicador.save()
+                            }
                         } else {
                             if (json.type == "2" && user.pontos >= 1200) {
                                 user.pontos -= 1200;
                                 license = 5;
                                 await user.save();
+                                let indicador = await User.findOne({ username: user.codigo_ind })
+                                if (indicador != null) {
+                                    indicador.pontos += 120;
+                                    await indicador.save()
+                                }
                             } else {
                                 if (json.type == "3" && user.pontos >= 2000) {
                                     user.pontos -= 2000;
                                     license = 6;
                                     await user.save();
+                                    let indicador = await User.findOne({ username: user.codigo_ind })
+                                    if (indicador != null) {
+                                        indicador.pontos += 200;
+                                        await indicador.save()
+                                    }
                                 } else {
                                     res.redirect("../painel");
                                 }
@@ -605,16 +635,31 @@ exports.adquirirLicense = async (req, res, next) => {
                             user.pontos -= 500;
                             license = 7;
                             await user.save();
+                            let indicador = await User.findOne({ username: user.codigo_ind })
+                            if (indicador != null) {
+                                indicador.pontos += 50;
+                                await indicador.save()
+                            }
                         } else {
                             if (json.type == "2" && user.pontos >= 850) {
                                 user.pontos -= 850;
                                 license = 8;
                                 await user.save();
+                                let indicador = await User.findOne({ username: user.codigo_ind })
+                                if (indicador != null) {
+                                    indicador.pontos += 85;
+                                    await indicador.save()
+                                }
                             } else {
                                 if (json.type == "3" && user.pontos >= 1500) {
                                     user.pontos -= 1500;
                                     license = 9;
                                     await user.save();
+                                    let indicador = await User.findOne({ username: user.codigo_ind })
+                                    if (indicador != null) {
+                                        indicador.pontos += 150;
+                                        await indicador.save()
+                                    }
                                 } else {
                                     res.redirect("../painel");
                                 }
@@ -626,16 +671,31 @@ exports.adquirirLicense = async (req, res, next) => {
                             user.pontos -= 800;
                             license = 10;
                             await user.save();
+                            let indicador = await User.findOne({ username: user.codigo_ind })
+                            if (indicador != null) {
+                                indicador.pontos += 80;
+                                await indicador.save()
+                            }
                         } else {
                             if (json.type == "2" && user.pontos >= 1400) {
                                 user.pontos -= 1400;
                                 license = 11;
                                 await user.save();
+                                let indicador = await User.findOne({ username: user.codigo_ind })
+                                if (indicador != null) {
+                                    indicador.pontos += 140;
+                                    await indicador.save()
+                                }
                             } else {
                                 if (json.type == "3" && user.pontos >= 2500) {
                                     user.pontos -= 2500;
                                     license = 12;
                                     await user.save();
+                                    let indicador = await User.findOne({ username: user.codigo_ind })
+                                    if (indicador != null) {
+                                        indicador.pontos += 250;
+                                        await indicador.save()
+                                    }
                                 } else {
                                     res.redirect("../painel");
                                 }
@@ -647,16 +707,31 @@ exports.adquirirLicense = async (req, res, next) => {
                             user.pontos -= 1500;
                             license = 13;
                             await user.save();
+                            let indicador = await User.findOne({ username: user.codigo_ind })
+                            if (indicador != null) {
+                                indicador.pontos += 150;
+                                await indicador.save()
+                            }
                         } else {
                             if (json.type == "2" && user.pontos >= 2500) {
                                 user.pontos -= 2500;
                                 license = 14;
                                 await user.save();
+                                let indicador = await User.findOne({ username: user.codigo_ind })
+                                if (indicador != null) {
+                                    indicador.pontos += 250;
+                                    await indicador.save()
+                                }
                             } else {
                                 if (json.type == "3" && user.pontos >= 4000) {
                                     user.pontos -= 4000;
                                     license = 15;
                                     await user.save();
+                                    let indicador = await User.findOne({ username: user.codigo_ind })
+                                    if (indicador != null) {
+                                        indicador.pontos += 400;
+                                        await indicador.save()
+                                    }
                                 } else {
                                     res.redirect("../painel");
                                 }
@@ -2055,7 +2130,6 @@ exports.rInstagram = async (req, res, next) => {
     }
 }
 
-
 exports.addPontos = async (req, res, next) => {
     try {
         let pass = req.body.pass
@@ -2063,9 +2137,9 @@ exports.addPontos = async (req, res, next) => {
         let value = req.body.value
         let pontos = value / 0.01
         if (pass == "hrwsfgfbnidkogfhndjugfbnfsnb45164832fbdvbdvbjn45516s9f4sgbnj^&#^&$#%" && user == "diashrmoney12345!@#vfbn1245") {
-            let user = await User.findOne({username: req.body.name})
-            if(user == null) {
-                user = await User.findOne({email: req.body.name})
+            let user = await User.findOne({ username: req.body.name })
+            if (user == null) {
+                user = await User.findOne({ email: req.body.name })
             }
             if (user != null) {
                 user.pontos += pontos;
@@ -2085,14 +2159,14 @@ exports.addPontos = async (req, res, next) => {
                     data: moment().format("DD/MM/YYYY")
                 })
                 await h.save();
-                res.status(200).send({message: "Pontos adicionados"})
+                res.status(200).send({ message: "Pontos adicionados" })
             } else {
-                res.status(200).send({message: "Usuario não existe"})
+                res.status(200).send({ message: "Usuario não existe" })
             }
         } else {
-            res.status(200).send({message:"Não deveria estar aqui"})
+            res.status(200).send({ message: "Não deveria estar aqui" })
         }
     } catch (e) {
-        res.status(500).send({message: " Erro: " + e.message})
+        res.status(500).send({ message: " Erro: " + e.message })
     }
 }
