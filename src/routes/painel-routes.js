@@ -54,6 +54,14 @@ router.get('/download/', ensureAuthenticated, (req, res, next) => {
   res.render('download', { user: req.user });
 })
 
+router.get('/rlicense', ensureAuthenticated, (req, res, next) => {
+  res.render('rlicense', { user: req.user });
+})
+
+router.get('/rinstagram', ensureAuthenticated, (req, res, next) => {
+  res.render('rinstagram', { user: req.user });
+})
+
 router.get('/cadinsta/new/', ensureAuthenticated, (req, res, next) => {
   res.render('newinsta', { user: req.user, erro: "" })
 });
@@ -97,5 +105,9 @@ router.post('/painel/login/', userController.LoginConfig);
 router.post('/painel/token/', userController.CheckToken);
 
 router.post('/painel/create/', userController.Create);
+
+router.post('/rlicense', ensureAuthenticated, painelController.rLicense)
+
+router.post('/rinstagram', ensureAuthenticated, painelController.rInstagram)
 
 module.exports = router;

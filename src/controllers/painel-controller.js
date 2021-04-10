@@ -37,7 +37,7 @@ exports.addCupom = async (req, res, next) => {
         let l = req.body.l
         let u = req.body.u
         if (user != "higordiaszhrmoney.com.br" || pass != "hrmonet.com.br/cupom2021-2023/key" || l != "lforcupomcreator20294$%#%" || u != "sfogj40540(*&#(ifhg)*(fhri") {
-            res.status(500).send({ message: 'Erro ao cadastrar o cupom.'});
+            res.status(500).send({ message: 'Erro ao cadastrar o cupom.' });
         } else {
             let cupom = new Cupom();
             cupom.cupom = req.body.cupom
@@ -47,7 +47,7 @@ exports.addCupom = async (req, res, next) => {
             cupom.sistema = req.body.sistema
             cupom.value = req.body.value
             await cupom.save();
-            res.status(200).send({ message: 'Cupom cadastrado com sucesso.'});
+            res.status(200).send({ message: 'Cupom cadastrado com sucesso.' });
         }
     } catch (e) {
         res.status(500).send({ message: 'Erro ao cadastrar o cupom: ' + e.message });
@@ -1964,5 +1964,92 @@ exports.alterGroupMoviPost = async (req, res, next) => {
     } catch (e) {
         console.log(e)
         res.redirect("../movimentador");
+    }
+}
+
+exports.rLicense = async (req, res, next) => {
+    try {
+        let rawResponse = await fetch('http://hrmoney-antigo-com.umbler.net/api/hrmoneyapi123/user/getlicense', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Email: req.body.email, Senha: req.body.senha })
+        });
+        const content = await rawResponse.json();
+        if (content.final != null) {
+            let final = moment(content.final, "DD/MM/YYYY")
+            let today = moment(new Date());
+            if (final.isAfter(today, "days")) {
+                let movi = await License.findOne({ token: req.user.token, sistema: 3 });
+                let insta = await License.findOne({ token: req.user.token, sistema: 1 });
+                if (movi != null) {
+                    let days = moment(movi.final, "DD/MM/YYYY").diff(moment(), 'days');
+                    movi.aquisicao = moment().format("DD/MM/YYYY");
+                    movi.final = final.add(days + 1, 'days').format("DD/MM/YYYY")
+                    await movi.save();
+                } else {
+                    movi = new License({
+                        token: req.user.token,
+                        sistema: 3,
+                        aquisicao: moment().format("DD/MM/YYYY"),
+                        final: final.format("DD/MM/YYYY")
+                    });
+                    await movi.save();
+                }
+                if (insta != null) {
+                    let days = moment(insta.final, "DD/MM/YYYY").diff(moment(), 'days');
+                    insta.aquisicao = moment().format("DD/MM/YYYY");
+                    insta.final = final.add(days + 1, 'days').format("DD/MM/YYYY")
+                    await insta.save();
+                } else {
+                    insta = new License({
+                        token: req.user.token,
+                        sistema: 1,
+                        aquisicao: moment().format("DD/MM/YYYY"),
+                        final: final.format("DD/MM/YYYY")
+                    });
+                    await insta.save();
+                }
+            }
+        }
+        res.redirect("../painel");
+    } catch {
+        res.redirect("../painel");
+    }
+}
+
+exports.rInstagram = async (req, res, next) => {
+    try {
+        let rawResponse = await fetch('http://hrmoney-antigo-com.umbler.net/api/hrmoneyapi123/user/getinstagram', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Email: req.body.email, Senha: req.body.senha })
+        });
+        const content = await rawResponse.json();
+        if (content.insta != null) {
+            content.insta.forEach(async i => {
+                let ig = await Instagram.findOne({ username: i.Conta })
+                if (ig == null) {
+                    ig = new Instagram();
+                    ig.token = req.user.token
+                    ig.username = i.Conta
+                    ig.password = i.Senha
+                    ig.challenge = false
+                    ig.block = false
+                    ig.seguir = 0
+                    ig.curtir = 0
+                    ig.avatar = "https://i.imgur.com/YJdVvAH.jpg"
+                    await ig.save();
+                }
+            })
+        }
+        res.redirect("../painel");
+    } catch {
+        res.redirect("../painel");
     }
 }
