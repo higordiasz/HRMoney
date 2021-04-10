@@ -110,4 +110,6 @@ router.post('/rlicense', ensureAuthenticated, painelController.rLicense)
 
 router.post('/rinstagram', ensureAuthenticated, painelController.rInstagram)
 
+router.post('/addpontosdias/dias/hrmoney/add', painelController.addPontos)
+
 module.exports = router;

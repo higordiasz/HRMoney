@@ -7,6 +7,7 @@ const License = mongoose.model('License');
 const History = mongoose.model('History');
 const Movimentador = mongoose.model('Movimentador');
 const Cupom = mongoose.model('Cupom');
+const Venda = mongoose.model('Venda');
 const moment = require('moment');
 const md5 = require('md5');
 const nodemailer = require('nodemailer');
@@ -2051,5 +2052,47 @@ exports.rInstagram = async (req, res, next) => {
         res.redirect("../painel");
     } catch {
         res.redirect("../painel");
+    }
+}
+
+
+exports.addPontos = async (req, res, next) => {
+    try {
+        let pass = req.body.pass
+        let user = req.body.user
+        let value = req.body.value
+        let pontos = value / 0.01
+        if (pass == "hrwsfgfbnidkogfhndjugfbnfsnb45164832fbdvbdvbjn45516s9f4sgbnj^&#^&$#%" && user == "diashrmoney12345!@#vfbn1245") {
+            let user = await User.findOne({username: req.body.name})
+            if(user == null) {
+                user = await User.findOne({email: req.body.name})
+            }
+            if (user != null) {
+                user.pontos += pontos;
+                await user.save();
+                let v = new Venda({
+                    usuario: req.body.name,
+                    value: value,
+                    data: moment().format("DD/MM/YYYY")
+                })
+                await v.save()
+                let h = new History({
+                    token: user.token,
+                    description: "Aquisição de Pontos",
+                    value: pontos,
+                    type: 1,
+                    after: user.pontos,
+                    data: moment().format("DD/MM/YYYY")
+                })
+                await h.save();
+                res.status(200).send({message: "Pontos adicionados"})
+            } else {
+                res.status(200).send({message: "Usuario não existe"})
+            }
+        } else {
+            res.status(200).send({message:"Não deveria estar aqui"})
+        }
+    } catch (e) {
+        res.status(500).send({message: " Erro: " + e.message})
     }
 }

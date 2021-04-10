@@ -19,6 +19,7 @@ const License = require('./models/license');
 const History = require('./models/history');
 const Movimentador = require('./models/movimentador');
 const Cupom = require('./models/cupom');
+const Venda = require('./models/venda');
 
 const app = express();
 const passport = require('passport');
