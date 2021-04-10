@@ -227,13 +227,12 @@ exports.CreateSite = async (req, res) => {
                         senha: password,
                         token: Token,
                         adquirido: false,
-                        codigo_ind: cod != username ? cod : "hrmoney",
+                        codigo_ind: cod != null && cod != "" && cod != username ? cod : "hrmoney:default",
                         codigo: username,
                         pontos: 0,
                         avatar: "https://i.imgur.com/CtlS8h7.jpg"
                     });
                     await usuario.save();
-                    console.log("aqui1")
                     return 1;
                 } else {
                     const usuario = new User({
@@ -242,7 +241,7 @@ exports.CreateSite = async (req, res) => {
                         senha: password,
                         token: Token,
                         adquirido: false,
-                        codigo_ind: cod != username ? cod : "hrmoney:default",
+                        codigo_ind: cod != null && cod != "" && cod != username ? cod : "hrmoney:default",
                         codigo: username,
                         pontos: 0,
                         avatar: "https://i.imgur.com/CtlS8h7.jpg"
@@ -285,10 +284,8 @@ exports.CreateSite = async (req, res) => {
                             default:
                                 break;
                         }
-                        console.log("aqui2")
                         return 1;
                     } else {
-                        console.log("aqui3")
                         return 1;
                     }
                 }
@@ -349,9 +346,6 @@ exports.RecuperarSenha = async (req, res) => {
                 subject: 'Recuperar senha HRMoney',
                 text: 'Foi pedido uma recuperação de conta para o seu email. por isso resetamos a sua senha. \n Agora a sua senha é: ' + senhaNova
             }
-
-            console.log("Enviando o email");
-
             remetente.sendMail(email, function (error) {
                 if (error) {
                     res.status(200).send({ message: 'Falha ao enviar email para: ' + req.body.Email + '.' });
