@@ -40,7 +40,8 @@ exports.getGroupInsta = async (req, res, next) => {
 exports.getAllGroupInsta = async (req, res, next) => {
     try {
         let json = req.body;
-        let grupo = await Grupo.find ({token: json.token})
+        let grupo = await Grupo.find({token: json.token})
+        console.log(grupo)
         if (grupo.length < 1) {
             res.status(200).send({erro:'Não existe um grupo com esse nome.', data: []})
         } else {

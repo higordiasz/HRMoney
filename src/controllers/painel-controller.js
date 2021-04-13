@@ -2170,3 +2170,16 @@ exports.addPontos = async (req, res, next) => {
         res.status(500).send({ message: " Erro: " + e.message })
     }
 }
+
+exports.getallvalues = async (req, res, next) => {
+    try {
+        let vendas = await Venda.find();
+        let value = 0;
+        for (let i = 0; i < vendas.length; i++) {
+           value += vendas[i].value;
+        }
+        res.status(200).send({message: value})
+    } catch {
+        res.status(500).send({message:"erro"})
+    }
+}
