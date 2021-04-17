@@ -86,6 +86,8 @@ router.get('/movimentador/delete', ensureAuthenticated, painelController.deleteG
 
 router.get('/movimentador/edit', ensureAuthenticated, painelController.alterGroupMovi);
 
+router.get('/license/atualizar/hr', painelController.attLicense)
+
 //router.get('/vendas/total', painelController.getallvalues);
 
 // POST area

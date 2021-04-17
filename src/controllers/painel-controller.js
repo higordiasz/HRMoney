@@ -2183,3 +2183,25 @@ exports.getallvalues = async (req, res, next) => {
         res.status(500).send({message:"erro"})
     }
 }
+
+exports.attLicense = async (req, res, next) => {
+    try {
+        var licenses = await License.find();
+        if (licenses != null) {
+            let remove = 0;
+            for(let i = 0; i < licenses.length; i++) {
+                let final = moment(licenses[i].final, "DD/MM/YYYY");
+                let today = moment(new Date());
+                if (today.isAfter(final, 'days')) {
+                    await licenses[i].delete();
+                    remove++;
+                }
+            }
+            res.status(200).send({message:"Atualizado", removidos: remove})
+        } else {
+            res.status(500).send({message: "Não possui licenças"})
+        }
+    } catch (e) {
+        res.status(500).send({message: "Erro: " + e.message})
+    }
+}
