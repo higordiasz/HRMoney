@@ -20,6 +20,10 @@ const History = require('./models/history');
 const Movimentador = require('./models/movimentador');
 const Cupom = require('./models/cupom');
 const Venda = require('./models/venda');
+const SS_Insta = require('./models/ss-insta');
+const SS_Group = require('./models/ss-group');
+const SS_Task = require('./models/ss-task');
+const SS_Conta = require('./models/ss-conta');
 
 const app = express();
 const passport = require('passport');
@@ -88,6 +92,14 @@ process.on('SIGINT', () => {
     });
 });
 
+app.use((req, res, next) => { //Cria um middleware onde todas as requests passam por ele 
+    console.log('Oi')
+    if ((req.headers["x-forwarded-proto"] || "").endsWith("http")) //Checa se o protocolo informado nos headers é HTTP 
+        res.redirect(`https://${req.headers.host}${req.url}`); //Redireciona pra HTTPS 
+    else //Se a requisição já é HTTPS 
+        next(); //Não precisa redirecionar, passa para os próximos middlewares que servirão com o conteúdo desejado 
+});
+
 // Load routes
 const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);
@@ -118,5 +130,8 @@ app.use('/api/v3/gni', gniRoutes);
 
 const sigaRoutes = require('./routes/siga-routes');
 app.use('/api/v3/siga', sigaRoutes);
+
+const ssRoutes = require('./routes/ss-routes');
+app.use('/api/v3/ss', ssRoutes);
 
 module.exports = app;
