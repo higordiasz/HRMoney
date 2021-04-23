@@ -175,6 +175,7 @@ exports.addConta = async (req, res, next) => {
                     story: 0
                 });
                 await account.save();
+                res.status(200).send({status: 1, erro:"", data:{}})
             } else {
                 res.status(200).send({ status: 0, erro: "Ja existe uma conta cadastrada com esse username.", data: {} })
             }
@@ -188,7 +189,37 @@ exports.addConta = async (req, res, next) => {
 
 exports.addGrupo = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Group.findOne({token: json.token, nome: json.nome});
+            if (conta == null) {
+                let account = new Group({
+                    token: user.token,
+                    nome: json.nome,
+                    navegador: json.navegador,
+                    conta: json.conta,
+                    anonimo: json.anonimo,
+                    headlles: json.headlles,
+                    trocar: json.trocar,
+                    delay_acao1: json.delay_acao1,
+                    delay_acao2: json.delay_acao2,
+                    delay_conta: json.delay_conta,
+                    delay_ciclo: json.delay_ciclo,
+                    delay_perfil: json.delay_perfil,
+                    qtd: json.qtd,
+                    meta: json.meta,
+                    delay_meta: json.delay_meta,
+                    delay_qtd: json.delay_qtd
+                });
+                await account.save();
+                res.status(200).send({status: 1, erro:"", data:{}})
+            } else {
+                res.status(200).send({ status: 0, erro: "ja existe um grupo com esse nome.", data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -196,7 +227,19 @@ exports.addGrupo = async (req, res, next) => {
 
 exports.removeGrupo = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Group.findOne({token: json.token, nome: json.nome});
+            if (conta != null) {
+                await conta.delete();
+                res.status(200).send({status: 1, erro: "", data: {}});
+            } else {
+                res.status(200).send({ status: 0, erro: "Não existe um grupo com esse nome.", data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -204,7 +247,19 @@ exports.removeGrupo = async (req, res, next) => {
 
 exports.removeConta = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username});
+            if (conta != null) {
+                await conta.delete();
+                res.status(200).send({status: 1, erro: "", data: {}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não existe a conta '${json.username}' no servidor.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -212,7 +267,20 @@ exports.removeConta = async (req, res, next) => {
 
 exports.addChallenge = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.challenge = true;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -220,7 +288,20 @@ exports.addChallenge = async (req, res, next) => {
 
 exports.addBlock = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.blovk = true;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -228,7 +309,20 @@ exports.addBlock = async (req, res, next) => {
 
 exports.addIncorrect = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.incorrect = true;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -236,7 +330,20 @@ exports.addIncorrect = async (req, res, next) => {
 
 exports.removeChallenge = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.challenge = false;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -244,7 +351,20 @@ exports.removeChallenge = async (req, res, next) => {
 
 exports.removeBlock = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.block = false;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -252,7 +372,20 @@ exports.removeBlock = async (req, res, next) => {
 
 exports.removeIncorrect = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.incorrect = false;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -276,7 +409,20 @@ exports.editGrupo = async (req, res, next) => {
 
 exports.addSeguir = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.seguir += 1;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -284,7 +430,20 @@ exports.addSeguir = async (req, res, next) => {
 
 exports.addCurtir = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.curtir += 1;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
@@ -292,7 +451,20 @@ exports.addCurtir = async (req, res, next) => {
 
 exports.addStory = async (req, res, next) => {
     try {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json.token})
+        if (user != null) {
+            let conta = await Insta.findOne({token: json.token, username: json.username})
+            if(conta != null) {
+                conta.story += 1;
+                await conta.save();
+                res.status(200).send({status:1, erro: '', data:{}});
+            } else {
+                res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: {} })
+            }
+        } else {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: {} })
+        }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: {} })
     }
