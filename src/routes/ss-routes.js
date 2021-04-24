@@ -4,6 +4,8 @@ const ssController = require('../controllers/ss-controller');
 
 router.post('/login/', ssController.login)
 
+router.post('/cad/', ssController.cadConta);
+
 router.post('/getcontas/', ssController.getContas);
 
 router.post('/getgrupos/', ssController.getGrupos);
