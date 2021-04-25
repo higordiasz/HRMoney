@@ -53,7 +53,7 @@ exports.cadConta = async (req, res, next) => {
                 user = new Conta({
                     email: json.email,
                     senha: json.senha,
-                    tokensiga: tokensiga,
+                    tokensiga: json.tokensiga,
                     tokenhr: Token
                 })
                 await user.save();
