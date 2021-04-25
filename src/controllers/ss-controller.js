@@ -4,6 +4,7 @@ const Insta = mongoose.model('SS_Insta');
 const Group = mongoose.model('SS_Group');
 const Task = mongoose.model('SS_Task');
 const fetch = require('node-fetch');
+const md5 = require('md5');
 const { remove } = require('../models/versao');
 
 exports.login = async (req, res, next) => {

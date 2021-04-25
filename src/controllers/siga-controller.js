@@ -20,11 +20,13 @@ exports.loginSiga = async (req, res) => {
                 secret: secret
             })
             var send = token.encode(request);
+            console.log(send)
             const response = await fetch('https://sigasocial.com.br/scrobot/requestbot2', {
                 method: 'post',
                 body: send
             })
                 .then(res => res.text());
+            console.log(response)
             var token2 = new fernet.Token({
                 secret: secret,
                 token: response,
