@@ -84,7 +84,7 @@ exports.getContas = async (req, res, next) => {
                     delete res.__v;
                     list.push(res);
                 }
-                res.status(200).send({ status: 1, erro: "", data: { list } })
+                res.status(200).send({ status: 1, erro: "", data: list })
             } else {
                 res.status(200).send({ status: 0, erro: `Não possui conta cadastrada no sistema.`, data: [] })
             }
