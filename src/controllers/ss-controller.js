@@ -174,7 +174,7 @@ exports.addConta = async (req, res, next) => {
             let conta = await Insta.findOne({ token: json.token, username: json.username });
             if (conta == null) {
                 let account = new Insta({
-                    token: user.token,
+                    token: user.tokenhr,
                     username: json.username,
                     password: json.password,
                     block: false,
