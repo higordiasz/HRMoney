@@ -106,15 +106,15 @@ exports.getConta = async (req, res, next) => {
                 let res = conta.toJSON();
                 delete res._id;
                 delete res.__v;
-                res.status(200).send({ status: 1, erro: "", data: [res] })
+                res.status(200).send({ status: 1, erro: "", data: [res] });
             } else {
-                res.status(200).send({ status: 0, erro: `Não foi possivel localizar a conta '${json.username}'`, data: [] })
+                res.status(200).send({ status: 0, erro: `Não foi possivel localizar a conta '${json.username}'`, data: [] });
             }
         } else {
-            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] });
         }
     } catch (e) {
-        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
+        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] });
     }
 }
 
