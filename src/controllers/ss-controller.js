@@ -103,10 +103,10 @@ exports.getConta = async (req, res, next) => {
         if (user != null) {
             let conta = await Insta.findOne({ token: json.token, username: json.username })
             if (conta != null) {
-                let res = conta.toJSON();
-                delete res._id;
-                delete res.__v;
-                res.status(200).send({ status: 1, erro: "", data: [res] });
+                let res1 = conta.toJSON();
+                delete res1._id;
+                delete res1.__v;
+                res.status(200).send({ status: 1, erro: "", data: [res1] });
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi possivel localizar a conta '${json.username}'`, data: [] });
             }
