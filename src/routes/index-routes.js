@@ -15,7 +15,24 @@ router.get('/', forwardAuthenticated, (req, res, next) => {
   res.redirect('painel')
 });
 
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+router.get('/login', forwardAuthenticated, async (req, res) => {
+  //console.log(req);
+  //console.log(req.sessionStore.sessions[Object.keys(req.sessionStore.sessions)]);
+  var e = req.sessionStore.sessions[Object.keys(req.sessionStore.sessions)];
+  if (e != null) {
+    if (e.indexOf("Missing credentials") > -1) {
+      res.render('login', { message: "Preencha todos os campos" })
+    } else {
+      if (e.indexOf("Usuario ou senha errado") > -1) {
+        res.render('login', { message: "Usuario ou senha errado" })
+      } else {
+        res.render('login', { message: "" })
+      }
+    }
+  } else {
+    res.render('login', { message: "" })
+  }
+});
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
@@ -25,7 +42,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/registro', forwardAuthenticated, (req, res) => res.render('register', {Cadastro: ""}));
+router.get('/registro', forwardAuthenticated, (req, res) => res.render('register', { Cadastro: "" }));
 
 router.post('/registro', forwardAuthenticated, async (req, res, next) => {
   var cadastro = await User.CreateSite(req, res);
