@@ -205,7 +205,7 @@ exports.addGrupo = async (req, res, next) => {
             let conta = await Group.findOne({ token: json.token, nome: json.nome });
             if (conta == null) {
                 let account = new Group({
-                    token: user.token,
+                    token: user.tokenhr,
                     nome: json.nome,
                     navegador: json.navegador,
                     conta: json.conta,
