@@ -44,4 +44,6 @@ router.post('/addcurtir/', ssController.addCurtir);
 
 router.post('/addstory/', ssController.addStory);
 
+router.post('/gettask/', sscontroller.getTask);
+
 module.exports = router;

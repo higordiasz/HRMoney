@@ -518,3 +518,22 @@ exports.addStory = async (req, res, next) => {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
     }
 }
+
+exports.getTask = async (req, res, next) => {
+    try {
+        let json = req.body;
+        let user = await Conta.findOne({tokenhr: json .token});
+        if (!user) {
+            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
+        } else {
+            let task = await Task.findOne({token: json.token})
+            if (task != null) {
+                res.status(200).send({ status: 1, erro: "", data: [task] })
+            } else {
+                res.status(200).send({ status: 0, erro: "Ainda não fez nenhuma tarefa.", data: [] })
+            }
+        }
+    } catch (e) {
+        res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
+    }
+}
