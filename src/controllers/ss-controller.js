@@ -159,7 +159,7 @@ exports.getGrupo = async (req, res, next) => {
                 res.status(200).send({ status: 0, erro: `Não possui um grupo com o nome '${json.nome}'.`, data: [] })
             }
         } else {
-            res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
+            res.status(200).send({ status: 0, erro: "Usuario inexistente.", data: [] })
         }
     } catch (e) {
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
