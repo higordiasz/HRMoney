@@ -149,7 +149,7 @@ exports.getGrupo = async (req, res, next) => {
         let json = req.body;
         let user = await Conta.findOne({ tokenhr: json.token });
         if (user != null) {
-            let grupos = await Group.findOne({ token: user.token, nome: json.nome });
+            let grupos = await Group.findOne({ token: json.token, nome: json.nome });
             if (grupos != null) {
                 let aux = grupos.toJSON();
                 delete aux._id;
