@@ -123,7 +123,7 @@ exports.getGrupos = async (req, res, next) => {
         let json = req.body;
         let user = await Conta.findOne({ tokenhr: json.token });
         if (user != null) {
-            let grupos = await Group.find({ token: user.token });
+            let grupos = await Group.find({ token: user.tokenhr });
             if (grupos.length > 0) {
                 let list = new Array();
                 for (let i = 0; i < grupos.length; i++) {
