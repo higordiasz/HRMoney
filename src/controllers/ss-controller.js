@@ -6,6 +6,7 @@ const Task = mongoose.model('SS_Task');
 const fetch = require('node-fetch');
 const md5 = require('md5');
 const { remove } = require('../models/versao');
+const seguir = require('../models/seguir');
 
 exports.login = async (req, res, next) => {
     try {
@@ -466,6 +467,15 @@ exports.addSeguir = async (req, res, next) => {
                 conta.seguir += 1;
                 await conta.save();
                 res.status(200).send({ status: 1, erro: '', data: [] });
+                let tasks = await Task.findOne({token: json.token});
+                if (tasks != null) {
+                    task.total += 1;
+                    task.seguir += 1;
+                    await tasks.save();
+                } else {
+                    let newTask = new Task ({token: json.token, seguir: 1, curtir: 0, story: 0, total: 1});
+                    await newTask.save();
+                }
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
@@ -487,6 +497,15 @@ exports.addCurtir = async (req, res, next) => {
                 conta.curtir += 1;
                 await conta.save();
                 res.status(200).send({ status: 1, erro: '', data: [] });
+                let tasks = await Task.findOne({token: json.token});
+                if (tasks != null) {
+                    task.total += 1;
+                    task.curtir += 1;
+                    await tasks.save();
+                } else {
+                    let newTask = new Task ({token: json.token, seguir: 0, curtir: 1, story: 0, total: 1});
+                    await newTask.save();
+                }
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
@@ -508,6 +527,15 @@ exports.addStory = async (req, res, next) => {
                 conta.story += 1;
                 await conta.save();
                 res.status(200).send({ status: 1, erro: '', data: [] });
+                let tasks = await Task.findOne({token: json.token});
+                if (tasks != null) {
+                    task.total += 1;
+                    task.story += 1;
+                    await tasks.save();
+                } else {
+                    let newTask = new Task ({token: json.token, seguir: 0, curtir: 0, story: 1, total: 1});
+                    await newTask.save();
+                }
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
