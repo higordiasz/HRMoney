@@ -14,7 +14,7 @@ const ss_taskSchema = new Schema({
       type: Number,
       required: true
   },
-  stroy: {
+  story: {
       type: Number,
       required: true
   },
