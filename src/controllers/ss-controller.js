@@ -466,7 +466,6 @@ exports.addSeguir = async (req, res, next) => {
             if (conta != null) {
                 conta.seguir += 1;
                 await conta.save();
-                res.status(200).send({ status: 1, erro: '', data: [] });
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
                     task.total += 1;
@@ -476,6 +475,7 @@ exports.addSeguir = async (req, res, next) => {
                     let newTask = new Task ({token: json.token, seguir: 1, curtir: 0, story: 0, total: 1});
                     await newTask.save();
                 }
+                res.status(200).send({ status: 1, erro: '', data: [] });
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
@@ -483,6 +483,7 @@ exports.addSeguir = async (req, res, next) => {
             res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
         }
     } catch (e) {
+        console.log(e)
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
     }
 }
@@ -496,7 +497,6 @@ exports.addCurtir = async (req, res, next) => {
             if (conta != null) {
                 conta.curtir += 1;
                 await conta.save();
-                res.status(200).send({ status: 1, erro: '', data: [] });
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
                     task.total += 1;
@@ -506,6 +506,7 @@ exports.addCurtir = async (req, res, next) => {
                     let newTask = new Task ({token: json.token, seguir: 0, curtir: 1, story: 0, total: 1});
                     await newTask.save();
                 }
+                res.status(200).send({ status: 1, erro: '', data: [] });
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
@@ -513,6 +514,7 @@ exports.addCurtir = async (req, res, next) => {
             res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
         }
     } catch (e) {
+        console.log(e)
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
     }
 }
@@ -526,7 +528,6 @@ exports.addStory = async (req, res, next) => {
             if (conta != null) {
                 conta.story += 1;
                 await conta.save();
-                res.status(200).send({ status: 1, erro: '', data: [] });
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
                     task.total += 1;
@@ -536,6 +537,7 @@ exports.addStory = async (req, res, next) => {
                     let newTask = new Task ({token: json.token, seguir: 0, curtir: 0, story: 1, total: 1});
                     await newTask.save();
                 }
+                res.status(200).send({ status: 1, erro: '', data: [] });
             } else {
                 res.status(200).send({ status: 0, erro: `Não foi encontrado uma conta com o nome '${json.username}'.`, data: [] })
             }
@@ -543,6 +545,7 @@ exports.addStory = async (req, res, next) => {
             res.status(200).send({ status: 0, erro: "Usuario inexistente", data: [] })
         }
     } catch (e) {
+        console.log(e)
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
     }
 }
@@ -562,6 +565,7 @@ exports.getTask = async (req, res, next) => {
             }
         }
     } catch (e) {
+        console.log(e)
         res.status(200).send({ status: 0, erro: "Erro: " + e.message, data: [] })
     }
 }
