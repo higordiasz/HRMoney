@@ -468,8 +468,8 @@ exports.addSeguir = async (req, res, next) => {
                 await conta.save();
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
-                    task.total += 1;
-                    task.seguir += 1;
+                    task.total = 1 + task.total;
+                    task.seguir = 1 + task.seguir;
                     await tasks.save();
                 } else {
                     let newTask = new Task ({token: json.token, seguir: 1, curtir: 0, story: 0, total: 1});
@@ -499,8 +499,8 @@ exports.addCurtir = async (req, res, next) => {
                 await conta.save();
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
-                    task.total += 1;
-                    task.curtir += 1;
+                    task.total = 1 + task.total;
+                    task.curtir = 1 + task.curtir;
                     await tasks.save();
                 } else {
                     let newTask = new Task ({token: json.token, seguir: 0, curtir: 1, story: 0, total: 1});
@@ -530,8 +530,8 @@ exports.addStory = async (req, res, next) => {
                 await conta.save();
                 let tasks = await Task.findOne({token: json.token});
                 if (tasks != null) {
-                    task.total += 1;
-                    task.story += 1;
+                    task.total = 1 + task.total;
+                    task.story = 1 + task.story;
                     await tasks.save();
                 } else {
                     let newTask = new Task ({token: json.token, seguir: 0, curtir: 0, story: 1, total: 1});
