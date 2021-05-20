@@ -2193,7 +2193,7 @@ exports.getValueByData = async (req, res, next) => {
         }
         res.status(200).send({message: value})
     } catch {
-        res.status(500).send({message:"erro"})
+        res.status(500).send({message:"Não foi possivel"})
     }
 }
 
