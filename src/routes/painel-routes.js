@@ -90,6 +90,8 @@ router.get('/license/atualizar/hr', painelController.attLicense)
 
 router.get('/vendas/total', painelController.getallvalues);
 
+router.get('/vendas/data', painelController.getValueByData);
+
 // POST area
 
 router.post('/movimentador/new', ensureAuthenticated, painelController.creatNewMovi);

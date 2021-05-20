@@ -2184,6 +2184,19 @@ exports.getallvalues = async (req, res, next) => {
     }
 }
 
+exports.getValueByData = async (req, res, next) => {
+    try {
+        let vendas = await Venda.find({data: req.body.data});
+        let value = 0;
+        for (let i = 0; i < vendas.length; i++) {
+           value += vendas[i].value;
+        }
+        res.status(200).send({message: value})
+    } catch {
+        res.status(500).send({message:"erro"})
+    }
+}
+
 exports.attLicense = async (req, res, next) => {
     try {
         var licenses = await License.find();
