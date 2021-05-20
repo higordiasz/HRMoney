@@ -53,11 +53,11 @@ exports.DeleteAllGruposAndInstagram = async (req, res, next) => {
                     let contas = await Instagram.find({ token: json.token });
                     let grupos = await Grupo.find({ token: json.token });
                     var number = 0;
-                    contas.forEach(c => {
+                    contas.forEach(c => async () => {
                         await c.delete();
                         number++;
                     })
-                    grupos.forEach(g => {
+                    grupos.forEach(g => async () => {
                         await g.delete();
                         number++;
                     })
