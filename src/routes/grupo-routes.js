@@ -10,4 +10,6 @@ router.post('/get/movimentador', grupoController.getGroupMovi);
 
 router.post('/getall/movimentador', grupoController.getAllGroupMovi);
 
+router.post('/deletealldate/', grupoController.DeleteAllGruposAndInstagram);
+
 module.exports = router;
