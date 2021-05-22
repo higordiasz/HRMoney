@@ -90,7 +90,7 @@ router.get('/license/atualizar/hr', painelController.attLicense)
 
 router.get('/vendas/total', painelController.getallvalues);
 
-router.get('/vendas/data', painelController.getValueByData);
+router.post('/vendas/data', painelController.getValueByData);
 
 // POST area
 
