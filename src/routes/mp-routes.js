@@ -46,9 +46,9 @@ router.get('/1', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
@@ -99,9 +99,9 @@ router.get('/5', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
@@ -152,9 +152,9 @@ router.get('/10', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
@@ -205,9 +205,9 @@ router.get('/25', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
@@ -258,9 +258,9 @@ router.get('/50', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
@@ -311,9 +311,9 @@ router.get('/100', ensureAuthenticated, async (req, res, next) => {
         },
         binary_mode: true,
         back_urls: {
-            success: "https://localhost:3000/chekout/ret",
-            failure: "https://localhost:3000/chekout/ret",
-            pending: "https://localhost:3000/chekout/ret"
+            success: "https://hrmoney.com.br/checkout/ret",
+            failure: "https://hrmoney.com.br/checkout/ret",
+            pending: "https://hrmoney.com.br/checkout/ret"
         },
         auto_return: "approved",
     }
