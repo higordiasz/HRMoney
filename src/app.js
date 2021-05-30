@@ -54,12 +54,12 @@ app.use(bodyParser.urlencoded({
 
 //Flash
 app.use(flash());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
     next();
-  });
+});
 
 // Database
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING, {
@@ -91,14 +91,24 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
-/*
+
 app.use((req, res, next) => { //Cria um middleware onde todas as requests passam por ele
     if ((req.headers["x-forwarded-proto"] || "").endsWith("http")) //Checa se o protocolo informado nos headers é HTTP 
         res.redirect(`https://${req.headers.host}${req.url}`); //Redireciona pra HTTPS 
     else //Se a requisição já é HTTPS 
         next(); //Não precisa redirecionar, passa para os próximos middlewares que servirão com o conteúdo desejado 
 });
-*/
+
+//Mercado Pago
+const mercadopago = require('mercadopago');
+
+mercadopago.configure({
+    access_token: 'APP_USR-892335237051732-052613-9ef6bf964d8583d583021bbe0467d055-416710926'
+});
+
+const mpRoutes = require('./routes/mp-routes');
+app.use('/checkout', mpRoutes);
+
 // Load routes
 const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);

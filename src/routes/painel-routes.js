@@ -19,7 +19,7 @@ router.get('/movimentador/', ensureAuthenticated, painelController.loadMovimenta
 router.get('/movimentador/new', ensureAuthenticated, painelController.loadNewMovi)
 
 router.get('/adquirir/', ensureAuthenticated, (req, res, next) => {
-  res.render('not', { user: req.user });
+  res.render('addpontos', { user: req.user });
 })
 
 router.get('/license/', ensureAuthenticated, (req, res, next) => {
@@ -52,14 +52,6 @@ router.get('/cadinsta/', ensureAuthenticated, painelController.loadCadInsta);
 
 router.get('/download/', ensureAuthenticated, (req, res, next) => {
   res.render('download', { user: req.user });
-})
-
-router.get('/rlicense', ensureAuthenticated, (req, res, next) => {
-  res.render('rlicense', { user: req.user });
-})
-
-router.get('/rinstagram', ensureAuthenticated, (req, res, next) => {
-  res.render('rinstagram', { user: req.user });
 })
 
 router.get('/cadinsta/new/', ensureAuthenticated, (req, res, next) => {

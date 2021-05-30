@@ -146,7 +146,7 @@ exports.LoginConfig = async (req, res) => {
 exports.Create = async (req, res) => {
     try {
 
-        let email = req.body.email;
+        let email = req.body.email.replace(" ", "").toLowerCase();
 
         let Existe = await User.find({ email: email })
 
@@ -195,7 +195,7 @@ exports.Create = async (req, res) => {
 exports.CreateSite = async (req, res) => {
     try {
 
-        let email = req.body.email;
+        let email = req.body.email.replace(" ", "").toLowerCase();
 
         let username = req.body.username;
 
@@ -322,7 +322,7 @@ exports.AlterarSenha = async (req, res) => {
 exports.RecuperarSenha = async (req, res) => {
     try {
 
-        let usuario = await User.findOne({ Email: req.body.Email });
+        let usuario = await User.findOne({ email: req.body.Email });
 
         if (usuario == null)
             res.status(200).send({ message: 'Não foi localizado um usuario com este email.' });

@@ -65,7 +65,7 @@ exports.alterInsta = async (req, res, next) => {
                 if (req.body.password != "") {
                     //Mudar user e senha
                     instagram.password = req.body.password;
-                    instagram.username = req.body.username;
+                    instagram.username = req.body.username.replace(" ", "").toLowerCase();
                     await instagram.save();
                     let grupos = await Grupo.find({ contas: req.body._username });
                     if (grupos.length > 0) {
@@ -76,7 +76,7 @@ exports.alterInsta = async (req, res, next) => {
                                     i--;
                                 }
                             }
-                            g.contas.push(req.body.username);
+                            g.contas.push(req.body.username.replace(" ", "").toLowerCase());
                             g.save();
                         })
                     }
@@ -89,14 +89,14 @@ exports.alterInsta = async (req, res, next) => {
                                     i--;
                                 }
                             }
-                            g.contas.push(req.body.username);
+                            g.contas.push(req.body.username.replace(" ", "").toLowerCase());
                             g.save();
                         })
                     }
                     res.redirect("../cadinsta");
                 } else {
                     //Mudar apenas User
-                    instagram.username = req.body.username;
+                    instagram.username = req.body.username.replace(" ", "").toLowerCase();
                     await instagram.save();
                     let grupos = await Grupo.find({ contas: req.body._username });
                     if (grupos.length > 0) {
@@ -107,7 +107,7 @@ exports.alterInsta = async (req, res, next) => {
                                     i--;
                                 }
                             }
-                            g.contas.push(req.body.username);
+                            g.contas.push(req.body.username.replace(" ", "").toLowerCase());
                             g.save();
                         })
                     }
@@ -120,7 +120,7 @@ exports.alterInsta = async (req, res, next) => {
                                     i--;
                                 }
                             }
-                            g.contas.push(req.body.username);
+                            g.contas.push(req.body.username.replace(" ", "").toLowerCase());
                             g.save();
                         })
                     }
@@ -234,7 +234,7 @@ exports.insertInsta = async (req, res, next) => {
         if (!exist) {
             let avatar = "";
             try {
-                var data = await fetch(`https://www.instagram.com/${req.body.username}/?__a=1`)
+                var data = await fetch(`https://www.instagram.com/${req.body.username.replace(" ", "").toLowerCase()}/?__a=1`)
                     .then(res => res.json())
                     .then(json => json);
                 try {
@@ -247,7 +247,7 @@ exports.insertInsta = async (req, res, next) => {
             }
             let novo = new Instagram({
                 token: req.user.token,
-                username: req.body.username,
+                username: req.body.username.replace(" ", "").toLowerCase(),
                 password: req.body.password,
                 curtir: 0,
                 seguir: 0,
@@ -282,19 +282,24 @@ exports.loadGruopInsta = async (req, res, next) => {
 
 exports.alterGroupInsta = async (req, res, next) => {
     try {
-        if (req.user.token == req.query.token && req.query.nome != "") {
-            let contas = await Instagram.find({ token: req.user.token });
-            let grupo = await Grupo.findOne({ nome: req.query.nome, token: req.user.token });
-            res.render('altgroupinsta', {
-                user: req.user,
-                contas: contas,
-                grupo: grupo,
-                erro_contas: "",
-                erro_timer: "",
-                erro_story: "",
-                erro_nav: "",
-                erro_nome: ""
-            })
+        let json = req.body;
+        if (json != null) {
+            if (req.user.token == req.query.token && req.query.nome != "") {
+                let contas = await Instagram.find({ token: req.user.token });
+                let grupo = await Grupo.findOne({ nome: req.query.nome, token: req.user.token });
+                res.render('altgroupinsta', {
+                    user: req.user,
+                    contas: contas,
+                    grupo: grupo,
+                    erro_contas: "",
+                    erro_timer: "",
+                    erro_story: "",
+                    erro_nav: "",
+                    erro_nome: ""
+                })
+            } else {
+                res.redirect("../instagram");
+            }
         } else {
             res.redirect("../instagram");
         }
@@ -337,18 +342,8 @@ exports.createNewGroup = async (req, res, next) => {
     try {
         let json = req.body;
         let user = req.user;
-        if (json.nome == "" || json.nome == null) {
-            res.render('newgroupinsta', {
-                user: req.user,
-                contas: [],
-                erro_contas: "",
-                erro_timer: "",
-                erro_story: "",
-                erro_nav: "",
-                erro_nome: "<p style=\"color:red\">Digite o nome do grupo!</p>"
-            })
-        } else {
-            if (await Grupo.findOne({ token: user.token, nome: json.nome }) != null) {
+        if (json != null) {
+            if (json.nome == "" || json.nome == null) {
                 res.render('newgroupinsta', {
                     user: req.user,
                     contas: [],
@@ -356,64 +351,86 @@ exports.createNewGroup = async (req, res, next) => {
                     erro_timer: "",
                     erro_story: "",
                     erro_nav: "",
-                    erro_nome: "<p style=\"color:red\">Ja existe um grupo com esse nome!</p>"
+                    erro_nome: "<p style=\"color:red\">Digite o nome do grupo!</p>"
                 })
             } else {
-                if (json.selecionadas == null) {
+                if (await Grupo.findOne({ token: user.token, nome: json.nome }) != null) {
                     res.render('newgroupinsta', {
                         user: req.user,
                         contas: [],
-                        erro_contas: "<p style=\"color:red\">Selecione ao menos 1 conta para o grupo!!</p>",
+                        erro_contas: "",
                         erro_timer: "",
                         erro_story: "",
                         erro_nav: "",
-                        erro_nome: ""
+                        erro_nome: "<p style=\"color:red\">Ja existe um grupo com esse nome!</p>"
                     })
                 } else {
-                    let grupo = new Grupo({
-                        nome: json.nome,
-                        token: user.token,
-                        plataforma: json.plataforma,
-                        contas: json.selecionadas,
-                        navegador: json.navegador,
-                        anonimo: json.anonimo != null ? true : false,
-                        buscartarefas: json.buscartarefas != null ? true : false,
-                        headless: json.headles != null ? true : false,
-                        delay_acao1: json.delay_acao1,
-                        delay_acao2: json.delay_acao2,
-                        delay_conta: json.delay_conta,
-                        delay_ciclo: json.delay_ciclo,
-                        delay_perfil: json.delay_perfil,
-                        delay_block: json.delay_block,
-                        delay_meta: json.delay_meta,
-                        meta: json.meta,
-                        qtd: json.qtd
-                    });
-                    if (json.assistir != null) {
-                        grupo.assistir = true;
-                        grupo.timer_assistir = json.temp_assistir != "" ? json.temp_assistir : 30;
-                        grupo.qtd_assistir = json.qtd_assistir != "" ? json.qtd_assistir : 10;
-                    } else {
-                        grupo.assistir = false;
-                        grupo.timer_assistir = 0;
-                        grupo.qtd_assistir = 0;
-                    }
-                    try {
-                        await grupo.save();
-                        res.redirect('../instagram');
-                    } catch {
+                    if (json.selecionadas == null) {
                         res.render('newgroupinsta', {
                             user: req.user,
                             contas: [],
-                            erro_contas: "",
+                            erro_contas: "<p style=\"color:red\">Selecione ao menos 1 conta para o grupo!!</p>",
                             erro_timer: "",
                             erro_story: "",
                             erro_nav: "",
-                            erro_nome: "<p style=\"color:red\">Nã foi possivel cadastrar o grupo!</p>"
+                            erro_nome: ""
                         })
+                    } else {
+                        let grupo = new Grupo({
+                            nome: json.nome.replace(" ", "").toLowerCase(),
+                            token: user.token,
+                            plataforma: json.plataforma,
+                            contas: json.selecionadas,
+                            navegador: json.navegador,
+                            anonimo: json.anonimo != null ? true : false,
+                            buscartarefas: json.buscartarefas != null ? true : false,
+                            headless: json.headles != null ? true : false,
+                            delay_acao1: json.delay_acao1,
+                            delay_acao2: json.delay_acao2,
+                            delay_conta: json.delay_conta,
+                            delay_ciclo: json.delay_ciclo,
+                            delay_perfil: json.delay_perfil,
+                            delay_block: json.delay_block,
+                            delay_meta: json.delay_meta,
+                            meta: json.meta,
+                            qtd: json.qtd
+                        });
+                        if (json.assistir != null) {
+                            grupo.assistir = true;
+                            grupo.timer_assistir = json.temp_assistir != "" ? json.temp_assistir : 30;
+                            grupo.qtd_assistir = json.qtd_assistir != "" ? json.qtd_assistir : 10;
+                        } else {
+                            grupo.assistir = false;
+                            grupo.timer_assistir = 0;
+                            grupo.qtd_assistir = 0;
+                        }
+                        try {
+                            await grupo.save();
+                            res.redirect('../instagram');
+                        } catch {
+                            res.render('newgroupinsta', {
+                                user: req.user,
+                                contas: [],
+                                erro_contas: "",
+                                erro_timer: "",
+                                erro_story: "",
+                                erro_nav: "",
+                                erro_nome: "<p style=\"color:red\">Nã foi possivel cadastrar o grupo!</p>"
+                            })
+                        }
                     }
                 }
             }
+        } else {
+            res.render('newgroupinsta', {
+                user: req.user,
+                contas: [],
+                erro_contas: "",
+                erro_timer: "",
+                erro_story: "",
+                erro_nav: "",
+                erro_nome: "<p style=\"color:red\">Nã foi possivel cadastrar o grupo!</p>"
+            })
         }
     } catch {
         res.render('newgroupinsta', {
@@ -1895,13 +1912,11 @@ exports.adquirirLicense = async (req, res, next) => {
                             break;
                     }
                 } else {
-                    res.redirect("../painel");
                 }
             }
         }
     } catch (e) {
         console.log(e)
-        res.redirect("../painel");
     }
 }
 
@@ -1943,7 +1958,7 @@ exports.creatNewMovi = async (req, res, next) => {
             } else {
                 let novo = new Movimentador({
                     token: user.token,
-                    nome: json.nome,
+                    nome: json.nome.replace(" ", "").toLowerCase(),
                     contas: json.selecionadas,
                     feed: json.feed != null ? true : false,
                     timer_feed: json.tempo_feed != "" ? json.tempo_feed : 30,
@@ -2176,24 +2191,24 @@ exports.getallvalues = async (req, res, next) => {
         let vendas = await Venda.find();
         let value = 0;
         for (let i = 0; i < vendas.length; i++) {
-           value += vendas[i].value;
+            value += vendas[i].value;
         }
-        res.status(200).send({message: value})
+        res.status(200).send({ message: value })
     } catch {
-        res.status(500).send({message:"erro"})
+        res.status(500).send({ message: "erro" })
     }
 }
 
 exports.getValueByData = async (req, res, next) => {
     try {
-        let vendas = await Venda.find({data: req.body.data});
+        let vendas = await Venda.find({ data: req.body.data });
         let value = 0;
         for (let i = 0; i < vendas.length; i++) {
-           value += vendas[i].value;
+            value += vendas[i].value;
         }
-        res.status(200).send({message: value})
+        res.status(200).send({ message: value })
     } catch {
-        res.status(500).send({message:"Erro"})
+        res.status(500).send({ message: "Erro" })
     }
 }
 
@@ -2202,7 +2217,7 @@ exports.attLicense = async (req, res, next) => {
         var licenses = await License.find();
         if (licenses != null) {
             let remove = 0;
-            for(let i = 0; i < licenses.length; i++) {
+            for (let i = 0; i < licenses.length; i++) {
                 let final = moment(licenses[i].final, "DD/MM/YYYY");
                 let today = moment(new Date());
                 if (today.isAfter(final, 'days')) {
@@ -2210,11 +2225,11 @@ exports.attLicense = async (req, res, next) => {
                     remove++;
                 }
             }
-            res.status(200).send({message:"Atualizado", removidos: remove})
+            res.status(200).send({ message: "Atualizado", removidos: remove })
         } else {
-            res.status(500).send({message: "Não possui licenças"})
+            res.status(500).send({ message: "Não possui licenças" })
         }
     } catch (e) {
-        res.status(500).send({message: "Erro: " + e.message})
+        res.status(500).send({ message: "Erro: " + e.message })
     }
 }
