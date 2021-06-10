@@ -61,7 +61,7 @@ exports.loginSistema = async (req, res, next) => {
         let pass = md5(json.password);
         let usuario = await User.findOne({ email: json.email, senha: pass });
         if (!usuario) {
-            res.status(200).send({ erro: 'Email não cadastrado no sistema.', data: [] });
+            res.status(200).send({ erro: 'Email ou senha incorreto.', data: [] });
         } else {
             if (await License.findOne({ sistema: json.sistema, token: usuario.token }) != null) {
                 let retorno = usuario.toJSON();
