@@ -35,7 +35,7 @@ router.get('/login', forwardAuthenticated, async (req, res) => {
 });
 
 router.get('/login-erro', forwardAuthenticated, async (req, res) => {
-  res.render('login', { message: "Usuario ou senha errado" })
+  res.render('login', { message: "Usuário ou senha errado" })
 })
 
 router.post('/login', (req, res, next) => {
