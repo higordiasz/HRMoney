@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const Venda = mongoose.model('Venda');
 const User = mongoose.model('User');
 const History = mongoose.model('History');
+const webhook = require('webhook-discord');
+const HookPagamentoMP = new webhook.Webhook("https://discord.com/api/webhooks/852600945669570561/-p9j_05DOjk9i8emHpcCSmR8H1bYrlx-nix0MfJ469HW5lKJ5CUzasxIt2d2EZhIXtbJ");
 const moment = require('moment');
 
 router.get('/1', ensureAuthenticated, async (req, res, next) => {
@@ -335,7 +337,12 @@ router.all('/ret', ensureAuthenticated, async (req, res, next) => {
         if (!payment.response) return res.render('checkouterr', { user: req.user, erro: "Não foi possivel carregar o pagamento do MercadoPago" });
         if (!payment.response.status) return res.render('checkouterr', { user: req.user, erro: "Não foi possivel carregar o pagamento do MercadoPago" });
         if (!payment.response.transaction_amount) return res.render('checkouterr', { user: req.user, erro: "Não foi possivel carregar o pagamento do MercadoPago" });
-        if (payment.response.status != "approved") return res.render('checkouterr', { user: req.user, erro: "Seu pagamento não foi aprovado" });
+        if (payment.response.status != "approved") {
+            try {
+                HookPagamentoMP.warn("HRMoney", `Pagamento não autorizado. \nStatus: ${payment.response.status} \nToken: ${req.user.token} \nValor: R$${payment.response.transaction_amount} \nPayment ID: ${req.query.payment_id}`);
+            } catch { }
+            return res.render('checkouterr', { user: req.user, erro: "Seu pagamento não foi aprovado" });
+        }
         if (payment.response.order.id != req.query.merchant_order_id) return res.render('checkouterr', { user: req.user, erro: "Não foi possivel carregar o pagamento do MercadoPago" });
         let venda = await Venda.findOne({ usuario: req.query.payment_id });
         if (venda != null) return res.render('checkouterr', { user: req.user, erro: "Ja foram adicionados os pontos dessa compra" });
@@ -344,6 +351,9 @@ router.all('/ret', ensureAuthenticated, async (req, res, next) => {
         let pontos = payment.response.transaction_amount / 0.01
         user.pontos += pontos;
         await user.save();
+        try {
+            HookPagamentoMP.success("HRMoney", `Pagamento autorizado. \nStatus: ${payment.response.status} \nToken: ${req.user.token} \nValor: R$${payment.response.transaction_amount} \nPayment ID: ${req.query.payment_id}`);
+        } catch { }
         venda = new Venda({
             usuario: req.query.payment_id,
             value: payment.response.transaction_amount,
