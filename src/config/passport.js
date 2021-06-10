@@ -10,7 +10,7 @@ module.exports = function (passport) {
     new LocalStrategy({ usernameField: 'username' }, (email, password, done) => {
       if (email.includes("@")) {
         User.findOne({
-          email: email
+          email: email.replace(" ", "")
         }).then(user => {
           if (!user) {
             return done(null, false, { message: 'Usuario ou senha errado' });
@@ -25,7 +25,7 @@ module.exports = function (passport) {
         });
       } else {
         User.findOne({
-          username: email
+          username: email.replace(" ", "")
         }).then(user => {
           if (!user) {
             return done(null, false, { message: 'Usuario ou senha errado' });
