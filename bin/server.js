@@ -1,6 +1,8 @@
 const app = require('../src/app');
 const http = require('http');
 const debug = require('debug')('nodestr:server');
+const webhook = require('webhook-discord');
+const HookSite = new webhook.Webhook("https://discord.com/api/webhooks/852560215836852224/W26vImgqHFfgpLVO2TG2UUa5XqwHhUkilc_RiiGiEuLPjmWAJ7iQIcz8vE4o-FKAedo-");
 
 // PORT // based on express-generator
 function normalizePort(val) {
@@ -55,3 +57,4 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 console.log(`API is alive on ${port}!`);
+HookSite.success("HRMoney", "Site Online!")

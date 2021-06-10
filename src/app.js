@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const webhook = require('webhook-discord');
+const HookSite = new webhook.Webhook("https://discord.com/api/webhooks/852560215836852224/W26vImgqHFfgpLVO2TG2UUa5XqwHhUkilc_RiiGiEuLPjmWAJ7iQIcz8vE4o-FKAedo-");
+const HookMongo = new webhook.Webhook("https://discord.com/api/webhooks/852560432706486282/SxzfEPc5qsfukE9cjDtF4SmDkzhVf3_PjRx-IOJ9x8xL_fp5k6NOLS6nv4OCd28xL-by");
 var path = require('path');
 const flash = require('express-flash');
 const session = require('express-session');
@@ -72,14 +75,17 @@ mongoose.connect(process.env.DATABASE_CONNECTION_STRING, {
 const db = mongoose.connection;
 
 db.on('connected', () => {
+    HookMongo.success("HRMoney", "Sucesso ao conectar com o banco de dados")
     console.log('Mongoose default connection is open');
 });
 
 db.on('error', err => {
+    HookMongo.err("HRMoney", `Erro: ${err}`)
     console.log(`Mongoose default connection has occured \n${err}`);
 });
 
 db.on('disconnected', () => {
+    HookMongo.warn("HRMoney", "Perdeu conexão com o banco de dados")
     console.log('Mongoose default connection is disconnected');
 });
 
