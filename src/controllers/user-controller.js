@@ -153,7 +153,7 @@ exports.Create = async (req, res) => {
         if (Existe.length > 0)
             res.status(201).send({ error: 'Esse email ja esta cadastrado.', data: [] });
         else {
-            username = req.body.username;
+            username = req.body.username.replace(" ", "");
             Existe = await User.find({ username: username })
             if (Existe.length > 0) {
                 res.status(201).send({ error: 'Esse username ja esta cadastrado.', data: [] });
@@ -197,7 +197,7 @@ exports.CreateSite = async (req, res) => {
 
         let email = req.body.email.replace(" ", "").toLowerCase();
 
-        let username = req.body.username;
+        let username = req.body.username.replace(" ", "");
 
         let list = ["hrmoney", "instagram", "tiktok", "insta", "youtube", "twitter"];
 
