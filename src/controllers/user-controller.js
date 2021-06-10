@@ -61,6 +61,9 @@ exports.loginSistema = async (req, res, next) => {
         let pass = md5(json.password);
         let usuario = await User.findOne({ email: json.email, senha: pass });
         if (!usuario) {
+            try {
+                HookLoginMod.warn("HRMoney", `Tentativa de login. \nSistema: ${json.sistema} \nToken: ${json.token} \nLicença: Invalida`);
+            } catch { }
             res.status(200).send({ erro: 'Email ou senha incorreto.', data: [] });
         } else {
             if (await License.findOne({ sistema: json.sistema, token: usuario.token }) != null) {
@@ -68,12 +71,12 @@ exports.loginSistema = async (req, res, next) => {
                 delete retorno._id;
                 delete retorno.__v;
                 try {
-                    HookLoginMod.success("HRMoney", `Login efetuado. \nSistema: ${json.sistema} \nToken: ${json.usuario.token}`);
+                    HookLoginMod.success("HRMoney", `Login efetuado. \nSistema: ${json.sistema} \nToken: ${usuario.token}`);
                 } catch { }
                 res.status(200).send({ error: "", data: [retorno] })
             } else {
                 try {
-                    HookLoginMod.warn("HRMoney", `Tentativa de login. \nSistema: ${json.sistema} \nToken: ${json.usuario.token} \nLicença: Invalida`);
+                    HookLoginMod.warn("HRMoney", `Tentativa de login. \nSistema: ${json.sistema} \nToken: ${json.token} \nLicença: Invalida`);
                 } catch { }
                 res.status(200).send({ erro: "Não possui licença para usar esse sistema.", data: [] });
             }
