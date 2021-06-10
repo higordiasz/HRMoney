@@ -123,7 +123,7 @@ exports.getGroupMovi = async (req, res, next) => {
         let grupo = await Movimentador.findOne({ token: json.token, nome: json.nome })
         if (!grupo) {
             try {
-                HookGrupoMovi.warn("HRMoney", `Tentativa de puxar grupo errado. \nNome: ${json.nome} \nToken: ${json.token} \nLicença: ${license != null ? 'Valida' : 'Invalida'}`);
+                HookGrupoMovi.warn("HRMoney", `Tentativa de puxar grupo. \nNome: ${json.nome} \nToken: ${json.token} \nLicença: ${license != null ? 'Valida' : 'Invalida'}`);
             } catch { }
             res.status(200).send({ erro: 'Não existe um grupo com esse nome.', data: [] })
         } else {
