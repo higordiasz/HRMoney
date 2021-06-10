@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const License = mongoose.model('License');
+const webhook = require('webhook-discord');
+const HookLoginMod = new webhook.Webhook("https://discord.com/api/webhooks/852595375902031872/1FwqDjt4Z9qy27wXu6yur6k192Q93fkncafyGPaTKeHODojXnWj7aCTBoeOKtRs0EXu-");
 const Cupom = mongoose.model('Cupom');
 const md5 = require('md5');
 const nodemailer = require('nodemailer');
@@ -9,13 +11,11 @@ const moment = require('moment');
 
 // list
 /*
-
 Request:  
 {
     username:"",
     senha:""
 }
-
 */
 exports.LoginBot = async (req, res) => {
     try {
@@ -67,12 +67,21 @@ exports.loginSistema = async (req, res, next) => {
                 let retorno = usuario.toJSON();
                 delete retorno._id;
                 delete retorno.__v;
+                try {
+                    HookLoginMod.success("HRMoney", `Login efetuado. \nSistema: ${json.sistema} \nToken: ${json.usuario.token}`);
+                } catch { }
                 res.status(200).send({ error: "", data: [retorno] })
             } else {
+                try {
+                    HookLoginMod.warn("HRMoney", `Tentativa de login. \nSistema: ${json.sistema} \nToken: ${json.usuario.token} \nLicença: Invalida`);
+                } catch { }
                 res.status(200).send({ erro: "Não possui licença para usar esse sistema.", data: [] });
             }
         }
     } catch (e) {
+        try {
+            HookLoginMod.err("HRMoney", `Erro na requisição: ${e}`);
+        } catch { }
         res.status(500).send({ erro: 'Não foi possivel fazer login', data: [] })
     }
 }
