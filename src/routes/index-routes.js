@@ -34,10 +34,14 @@ router.get('/login', forwardAuthenticated, async (req, res) => {
   }
 });
 
+router.get('/login-erro', forwardAuthenticated, async (req, res) => {
+  res.render('login', { message: "Usuario ou senha errado" })
+})
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
     successRedirect: '/painel',
-    failureRedirect: '/login',
+    failureRedirect: '/login-erro',
     failureFlash: true
   })(req, res, next);
 });
