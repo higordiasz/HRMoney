@@ -20,6 +20,7 @@ module.exports = function (passport) {
           if (user.senha == senha) {
             return done(null, user);
           } else {
+            console.log(`[TENTATIVA DE LOGIN INCORRETA] User: ${email} | Senha: ${password}`)
             return done(null, false, { message: 'Usuario ou senha errado' });
           }
         });
@@ -35,6 +36,7 @@ module.exports = function (passport) {
           if (user.senha == senha) {
             return done(null, user);
           } else {
+            console.log(`[TENTATIVA DE LOGIN INCORRETA] User: ${email} | Senha: ${password}`)
             return done(null, false, { message: 'Usuario ou senha errado' });
           }
         });
