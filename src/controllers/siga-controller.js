@@ -21,7 +21,7 @@ exports.loginSiga = async (req, res) => {
             })
             var send = token.encode(request);
             console.log(send)
-            const response = await fetch('https://sigasocial.com.br/scrobot/requestbot2', {
+            const response = await fetch('http://167.114.35.92:8080/scrobot/48b6608e4ecbd56fffe4ec3eb895eb4a12', {
                 method: 'post',
                 body: send
             })

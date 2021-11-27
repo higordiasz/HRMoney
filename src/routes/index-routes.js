@@ -12,12 +12,14 @@ function CadastrarConta(Email, Senha) {
 };
 
 router.get('/', forwardAuthenticated, (req, res, next) => {
-  res.redirect('painel')
+  res.redirect('manutencao')
 });
 
+router.get('/manutencao', (req, res, next) => {
+  res.render('manutencao', {message: ""});
+})
+
 router.get('/login', forwardAuthenticated, async (req, res) => {
-  //console.log(req);
-  //console.log(req.sessionStore.sessions[Object.keys(req.sessionStore.sessions)]);
   var e = req.sessionStore.sessions[Object.keys(req.sessionStore.sessions)];
   if (e != null) {
     if (e.indexOf("Missing credentials") > -1) {
