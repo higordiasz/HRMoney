@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 const fernet = require('fernet');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-const apiKey = "0e51f39b80ff032d41a8f7ccaea1844a";
-var secret = new fernet.Secret('wC7ZrznTbamLzOJ-xCd2Eiq6SaY0CC8oz8iXBSNbfXQ=');
+const apiKey = "";
+var secret = new fernet.Secret('');
 // list
 // Request = {Email: email, Senha: senha}
 exports.loginSiga = async (req, res) => {
