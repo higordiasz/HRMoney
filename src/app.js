@@ -109,7 +109,7 @@ app.use((req, res, next) => { //Cria um middleware onde todas as requests passam
 const mercadopago = require('mercadopago');
 
 mercadopago.configure({
-    access_token: 'APP_USR-892335237051732-052613-9ef6bf964d8583d583021bbe0467d055-416710926'
+    access_token: ''
 });
 
 const mpRoutes = require('./routes/mp-routes');
